@@ -50,7 +50,9 @@ def criar_banco():
 
             saida TEXT,
 
-            total TEXT
+            total TEXT,
+
+            distancia TEXT
 
         )
 
@@ -63,7 +65,7 @@ def criar_banco():
 # REGISTRAR ENTRADA
 # ===================================================
 
-def registrar_entrada(nome):
+def registrar_entrada(nome, distancia=""):
 
     conn = conectar()
 
@@ -81,11 +83,12 @@ def registrar_entrada(nome):
             data,
             entrada,
             saida,
-            total
+            total,
+            distancia
 
         )
 
-        VALUES(?,?,?,?,?)
+        VALUES(?,?,?,?,?,?)
 
     """, (
 
@@ -457,7 +460,8 @@ def atualizar_registro(
     data,
     entrada,
     saida,
-    total
+    total,
+    distancia
 ):
 
     conn = conectar()
@@ -473,7 +477,8 @@ def atualizar_registro(
             data = ?,
             entrada = ?,
             saida = ?,
-            total = ?
+            total = ?,
+            distancia = ?
         WHERE id = ?
         """,
 

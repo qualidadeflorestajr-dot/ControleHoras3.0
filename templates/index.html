@@ -71,7 +71,7 @@
 
 <h2>🟢 Registrar Entrada</h2>
 
-<form action="/entrada" method="POST">
+<form action="/entrada" method="POST" id="formEntrada">
 
 <select name="nome">
 
@@ -87,6 +87,10 @@
 
 </select>
 
+
+<input type="hidden" name="distancia" id="distancia">
+
+
 <button type="submit">
 
 Registrar Entrada
@@ -96,8 +100,6 @@ Registrar Entrada
 </form>
 
 </section>
-
-
 
 <!-- ========================= -->
 <!-- SAÍDA -->
@@ -313,6 +315,128 @@ class="botao-admin">
 
 </div>
 
+<script>
+
+const formEntrada = document.getElementById("formEntrada");
+
+formEntrada.addEventListener("submit", function(event){
+
+    event.preventDefault();
+
+
+    if (!navigator.geolocation){
+
+        alert("Seu navegador não suporta localização.");
+
+        formEntrada.submit();
+
+        return;
+
+    }
+
+
+    navigator.geolocation.getCurrentPosition(
+
+        function(position){
+
+
+            // Coordenadas da Floresta Jr (exemplo)
+            const latFloresta = -21.245000;
+            const lonFloresta = -44.999000;
+
+
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+
+
+            const distancia = calcularDistancia(
+
+                lat,
+                lon,
+                latFloresta,
+                lonFloresta
+
+            );
+
+
+            document.getElementById("distancia").value = distancia;
+
+
+            formEntrada.submit();
+
+
+        },
+
+
+        function(){
+
+            alert(
+                "Não foi possível obter localização."
+            );
+
+
+            document.getElementById("distancia").value = "Não informado";
+
+
+            formEntrada.submit();
+
+        }
+
+    );
+
+});
+
+
+
+function calcularDistancia(lat1, lon1, lat2, lon2){
+
+
+    const R = 6371000;
+
+
+    const dLat = (lat2-lat1) * Math.PI / 180;
+
+    const dLon = (lon2-lon1) * Math.PI / 180;
+
+
+    const a =
+
+        Math.sin(dLat/2)**2 +
+
+        Math.cos(lat1*Math.PI/180) *
+
+        Math.cos(lat2*Math.PI/180) *
+
+        Math.sin(dLon/2)**2;
+
+
+
+    const c =
+
+        2 * Math.atan2(
+
+            Math.sqrt(a),
+
+            Math.sqrt(1-a)
+
+        );
+
+
+    const metros = R*c;
+
+
+    if(metros < 1000){
+
+        return Math.round(metros) + " m";
+
+    }
+
+
+    return (metros/1000).toFixed(2) + " km";
+
+}
+
+</script>
 </body>
 
 </html>

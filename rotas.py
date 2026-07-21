@@ -25,8 +25,7 @@ from utils import (
     progresso_meta
 )
 
-from relatorio import criar_relatorio
-
+from relatorios.relatorio import criar_relatorio
 
 def registrar_rotas(app):
 
@@ -47,71 +46,79 @@ def registrar_rotas(app):
             semanal=total_semanal(),
             progresso=progresso_meta()
         )
-    # ==========================================
-    # EDITAR REGISTRO
-    # ==========================================
+   # ==========================================
+# EDITAR REGISTRO
+# ==========================================
 
-    @app.route("/editar/<int:id_registro>", methods=["GET", "POST"])
-    def editar(id_registro):
+@app.route("/editar/<int:id_registro>", methods=["GET", "POST"])
+def editar(id_registro):
 
-        if not session.get("admin"):
+    if not session.get("admin"):
 
-            flash("Faça login como administrador.")
+        flash("Faça login como administrador.")
 
-            return redirect("/")
+        return redirect("/")
 
-        registro = buscar_registro(id_registro)
+    registro = buscar_registro(id_registro)
 
-        if registro is None:
+    if registro is None:
 
-            flash("Registro não encontrado.")
+        flash("Registro não encontrado.")
 
-            return redirect("/admin")
+        return redirect("/admin")
 
-        if request.method == "POST":
 
-            nome = request.form.get("nome")
-            data = request.form.get("data")
-            entrada = request.form.get("entrada")
-            saida = request.form.get("saida")
-            total = request.form.get("total")
+    if request.method == "POST":
 
-            atualizar_registro(
-                id_registro,
-                nome,
-                data,
-                entrada,
-                saida,
-                total
-            )
+        nome = request.form.get("nome")
+        data = request.form.get("data")
+        entrada = request.form.get("entrada")
+        saida = request.form.get("saida")
+        total = request.form.get("total")
+        distancia = request.form.get("distancia")
 
-            flash("Registro atualizado com sucesso!")
 
-            return redirect("/admin")
-
-        return render_template(
-            "editar.html",
-            registro=registro
+        atualizar_registro(
+            id_registro,
+            nome,
+            data,
+            entrada,
+            saida,
+            total,
+            distancia
         )
 
+
+        flash("Registro atualizado com sucesso!")
+
+        return redirect("/admin")
+
+
+    return render_template(
+        "editar.html",
+        registro=registro
+    )
+    
     # ==========================================
     # REGISTRAR ENTRADA
     # ==========================================
 
     @app.route("/entrada", methods=["POST"])
-    def entrada():
+def entrada():
 
-        nome = request.form.get("nome")
+    nome = request.form.get("nome")
 
-        if not nome:
-            flash("Selecione um membro.")
-            return redirect("/")
-
-        registrar_entrada(nome)
-
-        flash(f"Entrada de {nome} registrada com sucesso!")
-
+    if not nome:
+        flash("Selecione um membro.")
         return redirect("/")
+
+    distancia = request.form.get("distancia", "")
+
+    registrar_entrada(nome, distancia)
+
+    flash(f"Entrada de {nome} registrada com sucesso!")
+
+    return redirect("/")
 
 
     # ==========================================
