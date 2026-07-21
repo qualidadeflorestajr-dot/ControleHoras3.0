@@ -28,7 +28,9 @@ from utils import (
 from relatorios.relatorio import criar_relatorio
 
 
+
 def registrar_rotas(app):
+
 
     # ==========================================
     # PÁGINA INICIAL
@@ -39,14 +41,23 @@ def registrar_rotas(app):
 
         registros = listar_registros()
 
+
         return render_template(
+
             "index.html",
+
             membros=MEMBROS,
+
             registros=registros,
+
             ranking=ranking_top3(),
+
             semanal=total_semanal(),
+
             progresso=progresso_meta()
+
         )
+
 
 
     # ==========================================
@@ -56,53 +67,88 @@ def registrar_rotas(app):
     @app.route("/editar/<int:id_registro>", methods=["GET", "POST"])
     def editar(id_registro):
 
+
         if not session.get("admin"):
 
-            flash("Faça login como administrador.")
+            flash(
+                "Faça login como administrador."
+            )
 
             return redirect("/")
+
 
 
         registro = buscar_registro(id_registro)
 
 
+
         if registro is None:
 
-            flash("Registro não encontrado.")
+            flash(
+                "Registro não encontrado."
+            )
 
             return redirect("/admin")
+
 
 
         if request.method == "POST":
 
+
             nome = request.form.get("nome")
+
             data = request.form.get("data")
+
             entrada = request.form.get("entrada")
+
             saida = request.form.get("saida")
+
             total = request.form.get("total")
-            distancia = request.form.get("distancia")
 
-
-            atualizar_registro(
-                id_registro,
-                nome,
-                data,
-                entrada,
-                saida,
-                total,
-                distancia
+            distancia = request.form.get(
+                "distancia"
             )
 
 
-            flash("Registro atualizado com sucesso!")
+
+            atualizar_registro(
+
+                id_registro,
+
+                nome,
+
+                data,
+
+                entrada,
+
+                saida,
+
+                total,
+
+                distancia
+
+            )
+
+
+
+            flash(
+                "Registro atualizado com sucesso!"
+            )
+
 
             return redirect("/admin")
 
 
+
         return render_template(
+
             "editar.html",
+
             registro=registro
+
         )
+
+
 
 
     # ==========================================
@@ -112,27 +158,52 @@ def registrar_rotas(app):
     @app.route("/entrada", methods=["POST"])
     def entrada():
 
+
         nome = request.form.get("nome")
+
+
 
         if not nome:
 
-            flash("Selecione um membro.")
+            flash(
+                "Selecione um membro."
+            )
 
             return redirect("/")
 
 
-        distancia = request.form.get("distancia", "")
 
+        distancia = request.form.get(
 
-        registrar_entrada(
-            nome,
-            distancia
+            "distancia",
+
+            "Não informado"
+
         )
 
 
-        flash(f"Entrada de {nome} registrada com sucesso!")
+
+        registrar_entrada(
+
+            nome,
+
+            distancia
+
+        )
+
+
+
+        flash(
+
+            f"Entrada de {nome} registrada com sucesso!"
+
+        )
+
+
 
         return redirect("/")
+
+
 
 
     # ==========================================
@@ -142,21 +213,36 @@ def registrar_rotas(app):
     @app.route("/saida", methods=["POST"])
     def saida():
 
+
         nome = request.form.get("nome")
+
+
 
         if not nome:
 
-            flash("Selecione um membro.")
+            flash(
+                "Selecione um membro."
+            )
 
             return redirect("/")
+
 
 
         registrar_saida(nome)
 
 
-        flash(f"Saída de {nome} registrada com sucesso!")
+
+        flash(
+
+            f"Saída de {nome} registrada com sucesso!"
+
+        )
+
+
 
         return redirect("/")
+
+
 
 
     # ==========================================
@@ -166,13 +252,22 @@ def registrar_rotas(app):
     @app.route("/exportar")
     def exportar():
 
+
         arquivo = criar_relatorio()
 
+
+
         return send_file(
+
             arquivo,
+
             as_attachment=True,
+
             download_name="Controle_Horas_Floresta_Jr_2026_2.xlsx"
+
         )
+
+
 
 
     # ==========================================
@@ -182,18 +277,28 @@ def registrar_rotas(app):
     @app.route("/admin")
     def admin():
 
+
         if not session.get("admin"):
 
-            return render_template("login_admin.html")
+            return render_template(
+                "login_admin.html"
+            )
+
 
 
         registros = listar_registros()
 
 
+
         return render_template(
+
             "admin.html",
+
             registros=registros
+
         )
+
+
 
 
     # ==========================================
@@ -203,24 +308,42 @@ def registrar_rotas(app):
     SENHA_ADMIN = "Qualidade2026/2"
 
 
+
     @app.route("/login_admin", methods=["POST"])
     def login_admin():
+
 
         senha = request.form.get("senha")
 
 
+
         if senha == SENHA_ADMIN:
+
 
             session["admin"] = True
 
-            flash("Login realizado com sucesso!")
+
+
+            flash(
+
+                "Login realizado com sucesso!"
+
+            )
+
+
 
             return redirect("/admin")
 
 
-        flash("Senha incorreta!")
+
+        flash(
+            "Senha incorreta!"
+        )
+
 
         return redirect("/")
+
+
 
 
     # ==========================================
@@ -230,11 +353,26 @@ def registrar_rotas(app):
     @app.route("/logout")
     def logout():
 
-        session.pop("admin", None)
 
-        flash("Logout realizado com sucesso!")
+        session.pop(
+
+            "admin",
+
+            None
+
+        )
+
+
+        flash(
+
+            "Logout realizado com sucesso!"
+
+        )
+
 
         return redirect("/")
+
+
 
 
     # ==========================================
@@ -244,19 +382,36 @@ def registrar_rotas(app):
     @app.route("/excluir/<int:id_registro>")
     def excluir(id_registro):
 
+
         if not session.get("admin"):
 
-            flash("Faça login como administrador.")
+
+            flash(
+
+                "Faça login como administrador."
+
+            )
+
 
             return redirect("/")
+
 
 
         excluir_registro(id_registro)
 
 
-        flash("Registro excluído com sucesso!")
+
+        flash(
+
+            "Registro excluído com sucesso!"
+
+        )
+
+
 
         return redirect("/admin")
+
+
 
 
     # ==========================================
@@ -266,19 +421,36 @@ def registrar_rotas(app):
     @app.route("/limpar")
     def limpar():
 
+
         if not session.get("admin"):
 
-            flash("Faça login como administrador.")
+
+            flash(
+
+                "Faça login como administrador."
+
+            )
+
 
             return redirect("/")
+
 
 
         limpar_registros()
 
 
-        flash("Todos os registros foram removidos!")
+
+        flash(
+
+            "Todos os registros foram removidos!"
+
+        )
+
+
 
         return redirect("/admin")
+
+
 
 
     # ==========================================
@@ -288,21 +460,35 @@ def registrar_rotas(app):
     @app.route("/exportar_limpar")
     def exportar_limpar():
 
+
         if not session.get("admin"):
 
-            flash("Faça login como administrador.")
+
+            flash(
+
+                "Faça login como administrador."
+
+            )
+
 
             return redirect("/")
+
 
 
         arquivo = criar_relatorio()
 
 
+
         limpar_registros()
 
 
+
         return send_file(
+
             arquivo,
+
             as_attachment=True,
+
             download_name="Controle_Horas_Floresta_Jr_2026_2.xlsx"
+
         )

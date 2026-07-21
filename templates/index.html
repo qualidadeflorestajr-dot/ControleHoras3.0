@@ -205,6 +205,8 @@ style="width:{{ pessoa.porcentagem }}%;">
 
 <th>Total</th>
 
+<th>Distância</th>
+
 </tr>
 
 </thead>
@@ -226,6 +228,8 @@ style="width:{{ pessoa.porcentagem }}%;">
 <td>{{ registro.saida or "-" }}</td>
 
 <td>{{ registro.total or "-" }}</td>
+
+<td>{{ registro.distancia or "-" }}</td>
 
 </tr>
 
@@ -341,8 +345,8 @@ formEntrada.addEventListener("submit", function(event){
 
 
             // Coordenadas da Floresta Jr (exemplo)
-            const latFloresta = -21.245000;
-            const lonFloresta = -44.999000;
+            const latFloresta = -21.225877;
+            const lonFloresta = -44.974395;
 
 
             const lat = position.coords.latitude;
