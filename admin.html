@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Administrador</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<div class="container">
+
+<header>
+
+    <h1>⚙ Área Administrativa</h1>
+
+    <h3>Controle de Horas Floresta Jr 2026/2</h3>
+
+</header>
+
+<section class="card">
+
+<h2>Painel do Administrador</h2>
+
+<div class="acoes-admin">
+
+<a href="/exportar" class="botao-admin">
+
+📄 Exportar Relatório
+<a href="/limpar"
+   class="botao-admin"
+   onclick="return confirm('Tem certeza que deseja apagar TODOS os registros?');">
+
+🧹 Limpar Todos os Registros
+
+</a>
+
+</a>
+
+<a href="/logout" class="botao-admin">
+
+🚪 Sair
+
+</a>
+
+<a href="/" class="botao-admin">
+
+🏠 Voltar ao Sistema
+
+</a>
+
+</div>
+
+</section>
+<section class="card">
+
+<h2>📋 Registros</h2>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>ID</th>
+
+<th>Nome</th>
+
+<th>Data</th>
+
+<th>Entrada</th>
+
+<th>Saída</th>
+
+<th>Total</th>
+
+<th>Ações</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for registro in registros %}
+
+<tr>
+
+<td>{{ registro.id }}</td>
+
+<td>{{ registro.nome }}</td>
+
+<td>{{ registro.data }}</td>
+
+<td>{{ registro.entrada }}</td>
+
+<td>{{ registro.saida }}</td>
+
+<td>{{ registro.total }}</td>
+
+<td>
+
+<a href="/editar/{{ registro.id }}">
+
+✏️
+
+</a>
+
+&nbsp;&nbsp;
+
+<a href="/excluir/{{ registro.id }}">
+
+🗑️
+
+</a>
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</section>
+</div>
+
+</body>
+
+</html>
+<footer class="footer">
+    <hr>
+
+    <p><strong>Sistema de Controle de Horas – Floresta Jr.</strong></p>
+
+    <p>Versão 2.0 • Gestão 2026/2</p>
+
+    <p>Desenvolvido por <strong>Mateus Gabriel de Souza</strong></p>
+
+    <p>Diretor de Qualidade – Gestão 2026/2</p>
+
+    <small>© 2026 Floresta Jr. Todos os direitos reservados.</small>
+</footer>

@@ -1,0 +1,287 @@
+/* ========================= */
+/* CONFIGURAÇÕES GERAIS */
+/* ========================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+
+    background:#eef5ef;
+
+    color:#1f2937;
+
+    padding:30px;
+
+}
+
+.container{
+
+    width:95%;
+
+    max-width:1200px;
+
+    margin:auto;
+
+}
+
+/* ========================= */
+/* CABEÇALHO */
+/* ========================= */
+
+header{
+
+    background:#14532d;
+
+    color:white;
+
+    text-align:center;
+
+    padding:30px;
+
+    border-radius:15px;
+
+    margin-bottom:25px;
+
+    box-shadow:0px 5px 15px rgba(0,0,0,.15);
+
+}
+
+header h1{
+
+    font-size:40px;
+
+}
+
+header h3{
+
+    margin-top:10px;
+
+    font-weight:400;
+
+}
+
+/* ========================= */
+/* CARDS */
+/* ========================= */
+
+.card{
+
+    background:white;
+
+    border-radius:15px;
+
+    padding:25px;
+
+    margin-bottom:25px;
+
+    box-shadow:0 5px 15px rgba(0,0,0,.12);
+
+}
+
+.card h2{
+
+    color:#166534;
+
+    margin-bottom:18px;
+
+}
+
+/* ========================= */
+/* FORMULÁRIOS */
+/* ========================= */
+
+form{
+
+    display:flex;
+
+    gap:15px;
+
+    flex-wrap:wrap;
+
+}
+
+select{
+
+    flex:1;
+
+    min-width:260px;
+
+    padding:12px;
+
+    border-radius:8px;
+
+    border:1px solid #d1d5db;
+
+    font-size:16px;
+
+}
+
+button{
+
+    padding:12px 24px;
+
+    border:none;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    font-size:16px;
+
+    background:#15803d;
+
+    color:white;
+
+    transition:.3s;
+
+}
+
+button:hover{
+
+    background:#166534;
+
+}
+/* ========================= */
+/* BOTÃO ADMIN */
+/* ========================= */
+
+.botao-admin{
+
+    display:inline-block;
+
+    width:100%;
+
+    text-align:center;
+
+    text-decoration:none;
+
+    background:#14532d;
+
+    color:white;
+
+    padding:15px;
+
+    border-radius:10px;
+
+    font-size:18px;
+
+    font-weight:bold;
+
+    transition:.3s;
+
+}
+
+.botao-admin:hover{
+
+    background:#0f3d20;
+
+}
+/* ===================================== */
+/* TABELA */
+/* ===================================== */
+
+table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+    margin-top:20px;
+
+    table-layout:fixed;
+
+}
+
+th{
+
+    background:#166534;
+
+    color:white;
+
+    padding:16px;
+
+    font-size:17px;
+
+    text-align:center;
+
+}
+
+td{
+
+    padding:16px;
+
+    font-size:16px;
+
+    text-align:center;
+
+    border-bottom:1px solid #ddd;
+
+    word-wrap:break-word;
+
+}
+
+tr:hover{
+
+    background:#f4f4f4;
+
+}
+/* ================================= */
+/* BOTÕES DA ÁREA ADMINISTRATIVA */
+/* ================================= */
+
+.btn-verde{
+
+    display:inline-block;
+
+    background:#166534;
+
+    color:white;
+
+    padding:12px 22px;
+
+    border-radius:8px;
+
+    text-decoration:none;
+
+    border:none;
+
+    cursor:pointer;
+
+    font-size:16px;
+
+}
+
+.btn-verde:hover{
+
+    background:#14532d;
+
+}
+
+.btn-vermelho{
+
+    display:inline-block;
+
+    background:#dc2626;
+
+    color:white;
+
+    padding:12px 22px;
+
+    border-radius:8px;
+
+    text-decoration:none;
+
+    margin-left:10px;
+
+}
+
+.btn-vermelho:hover{
+
+    background:#b91c1c;
+
+}

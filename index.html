@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Controle de Horas - Floresta Jr</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<div class="container">
+
+<header>
+
+    <h1>🌳 Controle de Horas</h1>
+
+    <h3>Floresta Jr 2026/2</h3>
+
+</header>
+
+
+<!-- ========================= -->
+<!-- RANKING -->
+<!-- ========================= -->
+
+<section class="card">
+
+    <h2>🏆 Ranking Semanal</h2>
+
+    <div class="ranking">
+
+    {% if ranking %}
+
+        {% for pessoa in ranking %}
+
+        <div class="ranking-item">
+
+            <span>{{ pessoa.pos }}</span>
+
+            <strong>{{ pessoa.nome }}</strong>
+
+            <span>{{ pessoa.total }}</span>
+
+        </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>Nenhum registro encontrado.</p>
+
+    {% endif %}
+
+    </div>
+
+</section>
+
+
+<!-- ========================= -->
+<!-- ENTRADA -->
+<!-- ========================= -->
+
+<section class="card">
+
+<h2>🟢 Registrar Entrada</h2>
+
+<form action="/entrada" method="POST">
+
+<select name="nome">
+
+{% for membro in membros %}
+
+<option value="{{ membro }}">
+
+{{ membro }}
+
+</option>
+
+{% endfor %}
+
+</select>
+
+<button type="submit">
+
+Registrar Entrada
+
+</button>
+
+</form>
+
+</section>
+
+
+
+<!-- ========================= -->
+<!-- SAÍDA -->
+<!-- ========================= -->
+
+<section class="card">
+
+<h2>🔴 Registrar Saída</h2>
+
+<form action="/saida" method="POST">
+
+<select name="nome">
+
+{% for membro in membros %}
+
+<option value="{{ membro }}">
+
+{{ membro }}
+
+</option>
+
+{% endfor %}
+
+</select>
+
+<button type="submit">
+
+Registrar Saída
+
+</button>
+
+</form>
+
+</section>
+
+
+
+<!-- ========================= -->
+<!-- META -->
+<!-- ========================= -->
+
+<section class="card">
+
+<h2>🎯 Meta Semanal (2h)</h2>
+
+{% if progresso %}
+
+{% for pessoa in progresso %}
+
+<p>
+
+<strong>{{ pessoa.nome }}</strong>
+
+({{ pessoa.total }})
+
+</p>
+
+<div class="barra">
+
+<div class="preenchimento"
+
+style="width:{{ pessoa.porcentagem }}%;">
+
+</div>
+
+</div>
+
+<br>
+
+{% endfor %}
+
+{% else %}
+
+<p>Nenhum registro.</p>
+
+{% endif %}
+
+</section>
+
+
+
+<!-- ========================= -->
+<!-- REGISTROS -->
+<!-- ========================= -->
+
+<section class="card">
+
+<h2>📋 Últimos Registros</h2>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Nome</th>
+
+<th>Data</th>
+
+<th>Entrada</th>
+
+<th>Saída</th>
+
+<th>Total</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% if registros %}
+
+{% for registro in registros %}
+
+<tr>
+
+<td>{{ registro.nome }}</td>
+
+<td>{{ registro.data }}</td>
+
+<td>{{ registro.entrada }}</td>
+
+<td>{{ registro.saida or "-" }}</td>
+
+<td>{{ registro.total or "-" }}</td>
+
+</tr>
+
+{% endfor %}
+
+{% else %}
+
+<tr>
+
+<td colspan="5">
+
+Nenhum registro encontrado.
+
+</td>
+
+</tr>
+
+{% endif %}
+
+</tbody>
+
+</table>
+
+</section>
+
+
+
+<!-- ========================= -->
+<!-- TOTAL SEMANAL -->
+<!-- ========================= -->
+
+<section class="card">
+
+<h2>📊 Total Semanal</h2>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Membro</th>
+
+<th>Total</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for pessoa in semanal %}
+
+<tr>
+
+<td>{{ pessoa.nome }}</td>
+
+<td>{{ pessoa.total }}</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</section>
+
+
+
+<!-- ========================= -->
+<!-- ADMIN -->
+<!-- ========================= -->
+
+<section class="card">
+
+<a href="/admin"
+
+class="botao-admin">
+
+⚙ Área do Administrador
+
+</a>
+
+</section>
+
+</div>
+
+</body>
+
+</html>
+<footer class="footer">
+    <hr>
+
+    <p><strong>Sistema de Controle de Horas – Floresta Jr.</strong></p>
+
+    <p>Versão 2.0 • Gestão 2026/2</p>
+
+    <p>Desenvolvido por <strong>Mateus Gabriel de Souza</strong></p>
+
+    <p>Diretor de Qualidade – Gestão 2026/2</p>
+
+    <small>© 2026 Floresta Jr. Todos os direitos reservados.</small>
+</footer>

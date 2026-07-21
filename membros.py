@@ -1,0 +1,31 @@
+MEMBROS = [
+
+    "Adla Camilla M. da Silva",
+    "Ana Beatriz de Faria do Nascimento",
+    "Brendo Adriano Alves Freire",
+    "Carlos Augusto Corrêa",
+    "Giulliana Pivato Campos",
+    "Iago de Souza Reis",
+    "Iago Lopes Sereno",
+    "Isabela Veiga Luchetti Gonçalves",
+    "João Carlos Almeida Maciel",
+    "Kamilly dos Santos Almeida",
+    "Kauã de Oliveira da Silva",
+    "Leonardo Antônio Luiz",
+    "Liriel Sales Diniz",
+    "Luiz Felipe dos Reis Bonatti",
+    "Luiz Otávio de Souza Pereira",
+    "Luiz Otávio Fernandes de Oliveira",
+    "Marcos Vinícius de Sousa",
+    "Marta Helena Pereira",
+    "Mateus Gabriel de Souza",
+    "Mateus Hebert Dias Pereira",
+    "Matheus Moraes",
+    "Michelly Maira Fernandes",
+    "Nhaumy Laysa S. Januario",
+    "Pedro Henrique Onofri Gomes",
+    "Rita Helena Ribeiro de Souza",
+    "Ronnie Von Luis Júnior",
+    "Tiago Freire Elias"
+
+]

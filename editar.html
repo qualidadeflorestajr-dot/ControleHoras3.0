@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Editar Registro</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="card">
+
+        <h1>✏️ Editar Registro</h1>
+
+        <form method="POST">
+
+            <label>Nome</label>
+
+            <input
+                type="text"
+                name="nome"
+                value="{{ registro.nome }}"
+                required
+            >
+
+            <label>Data</label>
+
+            <input
+                type="date"
+                name="data"
+                value="{{ registro.data }}"
+                required
+            >
+
+            <label>Entrada</label>
+
+            <input
+                type="time"
+                name="entrada"
+                value="{{ registro.entrada }}"
+                required
+            >
+
+            <label>Saída</label>
+
+            <input
+                type="time"
+                name="saida"
+                value="{{ registro.saida }}"
+                required
+            >
+
+            <label>Total</label>
+
+            <input
+                type="text"
+                name="total"
+                value="{{ registro.total }}"
+                required
+            >
+
+            <br><br>
+
+            <button type="submit" class="btn-verde">
+
+                💾 Salvar Alterações
+
+            </button>
+
+            <a href="/admin" class="btn-vermelho">
+
+                Cancelar
+
+            </a>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>
+<footer class="footer">
+    <hr>
+
+    <p><strong>Sistema de Controle de Horas – Floresta Jr.</strong></p>
+
+    <p>Versão 2.0 • Gestão 2026/2</p>
+
+    <p>Desenvolvido por <strong>Mateus Gabriel de Souza</strong></p>
+
+    <p>Diretor de Qualidade – Gestão 2026/2</p>
+
+    <small>© 2026 Floresta Jr. Todos os direitos reservados.</small>
+</footer>
