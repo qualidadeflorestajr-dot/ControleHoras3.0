@@ -27,6 +27,7 @@ from utils import (
 
 from relatorios.relatorio import criar_relatorio
 
+
 def registrar_rotas(app):
 
     # ==========================================
@@ -46,79 +47,92 @@ def registrar_rotas(app):
             semanal=total_semanal(),
             progresso=progresso_meta()
         )
-   # ==========================================
-# EDITAR REGISTRO
-# ==========================================
-
-@app.route("/editar/<int:id_registro>", methods=["GET", "POST"])
-def editar(id_registro):
-
-    if not session.get("admin"):
-
-        flash("Faça login como administrador.")
-
-        return redirect("/")
-
-    registro = buscar_registro(id_registro)
-
-    if registro is None:
-
-        flash("Registro não encontrado.")
-
-        return redirect("/admin")
 
 
-    if request.method == "POST":
+    # ==========================================
+    # EDITAR REGISTRO
+    # ==========================================
 
-        nome = request.form.get("nome")
-        data = request.form.get("data")
-        entrada = request.form.get("entrada")
-        saida = request.form.get("saida")
-        total = request.form.get("total")
-        distancia = request.form.get("distancia")
+    @app.route("/editar/<int:id_registro>", methods=["GET", "POST"])
+    def editar(id_registro):
+
+        if not session.get("admin"):
+
+            flash("Faça login como administrador.")
+
+            return redirect("/")
 
 
-        atualizar_registro(
-            id_registro,
-            nome,
-            data,
-            entrada,
-            saida,
-            total,
-            distancia
+        registro = buscar_registro(id_registro)
+
+
+        if registro is None:
+
+            flash("Registro não encontrado.")
+
+            return redirect("/admin")
+
+
+        if request.method == "POST":
+
+            nome = request.form.get("nome")
+            data = request.form.get("data")
+            entrada = request.form.get("entrada")
+            saida = request.form.get("saida")
+            total = request.form.get("total")
+            distancia = request.form.get("distancia")
+
+
+            atualizar_registro(
+                id_registro,
+                nome,
+                data,
+                entrada,
+                saida,
+                total,
+                distancia
+            )
+
+
+            flash("Registro atualizado com sucesso!")
+
+            return redirect("/admin")
+
+
+        return render_template(
+            "editar.html",
+            registro=registro
         )
 
 
-        flash("Registro atualizado com sucesso!")
-
-        return redirect("/admin")
-
-
-    return render_template(
-        "editar.html",
-        registro=registro
-    )
-    
     # ==========================================
     # REGISTRAR ENTRADA
     # ==========================================
 
     @app.route("/entrada", methods=["POST"])
-def entrada():
+    def entrada():
 
-    nome = request.form.get("nome")
+        nome = request.form.get("nome")
 
-    if not nome:
-        flash("Selecione um membro.")
+        if not nome:
+
+            flash("Selecione um membro.")
+
+            return redirect("/")
+
+
+        distancia = request.form.get("distancia", "")
+
+
+        registrar_entrada(
+            nome,
+            distancia
+        )
+
+
+        flash(f"Entrada de {nome} registrada com sucesso!")
+
         return redirect("/")
-
-    distancia = request.form.get("distancia", "")
-
-    registrar_entrada(nome, distancia)
-
-    flash(f"Entrada de {nome} registrada com sucesso!")
-
-    return redirect("/")
 
 
     # ==========================================
@@ -131,15 +145,21 @@ def entrada():
         nome = request.form.get("nome")
 
         if not nome:
+
             flash("Selecione um membro.")
+
             return redirect("/")
 
+
         registrar_saida(nome)
+
 
         flash(f"Saída de {nome} registrada com sucesso!")
 
         return redirect("/")
-        # ==========================================
+
+
+    # ==========================================
     # EXPORTAR RELATÓRIO
     # ==========================================
 
@@ -166,7 +186,9 @@ def entrada():
 
             return render_template("login_admin.html")
 
+
         registros = listar_registros()
+
 
         return render_template(
             "admin.html",
@@ -186,6 +208,7 @@ def entrada():
 
         senha = request.form.get("senha")
 
+
         if senha == SENHA_ADMIN:
 
             session["admin"] = True
@@ -193,6 +216,7 @@ def entrada():
             flash("Login realizado com sucesso!")
 
             return redirect("/admin")
+
 
         flash("Senha incorreta!")
 
@@ -211,7 +235,9 @@ def entrada():
         flash("Logout realizado com sucesso!")
 
         return redirect("/")
-        # ==========================================
+
+
+    # ==========================================
     # EXCLUIR REGISTRO
     # ==========================================
 
@@ -224,7 +250,9 @@ def entrada():
 
             return redirect("/")
 
+
         excluir_registro(id_registro)
+
 
         flash("Registro excluído com sucesso!")
 
@@ -244,7 +272,9 @@ def entrada():
 
             return redirect("/")
 
+
         limpar_registros()
+
 
         flash("Todos os registros foram removidos!")
 
@@ -264,9 +294,12 @@ def entrada():
 
             return redirect("/")
 
+
         arquivo = criar_relatorio()
 
+
         limpar_registros()
+
 
         return send_file(
             arquivo,
