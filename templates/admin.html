@@ -9,7 +9,8 @@
 
     <title>Administrador</title>
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
 
 </head>
 
@@ -25,43 +26,60 @@
 
 </header>
 
+
+<!-- ========================================== -->
+<!-- PAINEL DO ADMINISTRADOR -->
+<!-- ========================================== -->
+
 <section class="card">
 
 <h2>Painel do Administrador</h2>
 
 <div class="acoes-admin">
 
-<a href="/exportar" class="botao-admin">
+    <a href="/exportar" class="botao-admin">
+        📄 Exportar Relatório
+    </a>
 
-📄 Exportar Relatório
-<a href="/limpar"
-   class="botao-admin"
-   onclick="return confirm('Tem certeza que deseja apagar TODOS os registros?');">
+    <a href="/limpar"
+       class="botao-admin"
+       onclick="return confirm('Tem certeza que deseja apagar TODOS os registros?');">
 
-🧹 Limpar Todos os Registros
+        🧹 Limpar Todos os Registros
 
-</a>
+    </a>
 
-</a>
+    <a href="/logout" class="botao-admin">
 
-<a href="/logout" class="botao-admin">
+        🚪 Sair
 
-🚪 Sair
+    </a>
 
-</a>
+    <a href="/" class="botao-admin">
 
-<a href="/" class="botao-admin">
+        🏠 Voltar ao Sistema
 
-🏠 Voltar ao Sistema
-
-</a>
+    </a>
 
 </div>
 
 </section>
+
+
+<!-- ========================================== -->
+<!-- REGISTROS -->
+<!-- ========================================== -->
+
 <section class="card">
 
-<h2>📋 Registros</h2>
+<h2>📋 Registros Administrativos</h2>
+
+<p>
+
+🔒 <strong>Informação privada:</strong>
+a distância é exibida somente nesta área administrativa.
+
+</p>
 
 <table>
 
@@ -81,11 +99,16 @@
 
 <th>Total</th>
 
+<th>Distância</th>
+
+<th>Situação</th>
+
 <th>Ações</th>
 
 </tr>
 
 </thead>
+
 
 <tbody>
 
@@ -93,33 +116,84 @@
 
 <tr>
 
-<td>{{ registro.id }}</td>
+<td>
+    {{ registro.id }}
+</td>
 
-<td>{{ registro.nome }}</td>
 
-<td>{{ registro.data }}</td>
+<td>
+    {{ registro.nome }}
+</td>
 
-<td>{{ registro.entrada }}</td>
 
-<td>{{ registro.saida }}</td>
+<td>
+    {{ registro.data }}
+</td>
 
-<td>{{ registro.total }}</td>
+
+<td>
+    {{ registro.entrada }}
+</td>
+
+
+<td>
+    {{ registro.saida or "-" }}
+</td>
+
+
+<td>
+    {{ registro.total or "-" }}
+</td>
+
+
+<!-- ========================================== -->
+<!-- DISTÂNCIA -->
+<!-- ========================================== -->
+
+<td class="distancia">
+
+    {{ registro.distancia or "Não informado" }}
+
+</td>
+
+
+<!-- ========================================== -->
+<!-- SITUAÇÃO -->
+<!-- ========================================== -->
+
+<td class="situacao">
+
+    <span class="situacao-texto">
+
+        Analisando...
+
+    </span>
+
+</td>
+
+
+<!-- ========================================== -->
+<!-- AÇÕES -->
+<!-- ========================================== -->
 
 <td>
 
-<a href="/editar/{{ registro.id }}">
+    <a href="/editar/{{ registro.id }}"
+       title="Editar registro">
 
-✏️
+        ✏️
 
-</a>
+    </a>
 
-&nbsp;&nbsp;
+    &nbsp;&nbsp;
 
-<a href="/excluir/{{ registro.id }}">
+    <a href="/excluir/{{ registro.id }}"
+       title="Excluir registro"
+       onclick="return confirm('Tem certeza que deseja excluir este registro?');">
 
-🗑️
+        🗑️
 
-</a>
+    </a>
 
 </td>
 
@@ -127,26 +201,185 @@
 
 {% endfor %}
 
+
+{% if not registros %}
+
+<tr>
+
+<td colspan="9">
+
+    Nenhum registro encontrado.
+
+</td>
+
+</tr>
+
+{% endif %}
+
 </tbody>
 
 </table>
 
 </section>
+
+
 </div>
+
+
+<!-- ========================================== -->
+<!-- RODAPÉ -->
+<!-- ========================================== -->
+
+<footer class="footer">
+
+    <hr>
+
+    <p>
+        <strong>
+            Sistema de Controle de Horas – Floresta Jr.
+        </strong>
+    </p>
+
+    <p>
+        Versão 3.0 • Gestão 2026/2
+    </p>
+
+    <p>
+        Desenvolvido por
+        <strong>Mateus Gabriel de Souza</strong>
+    </p>
+
+    <p>
+        Diretor de Qualidade – Gestão 2026/2
+    </p>
+
+    <small>
+        © 2026 Floresta Jr. Todos os direitos reservados.
+    </small>
+
+</footer>
+
+
+<!-- ========================================== -->
+<!-- CLASSIFICAÇÃO DA DISTÂNCIA -->
+<!-- ========================================== -->
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const linhas = document.querySelectorAll("tbody tr");
+
+    linhas.forEach(function (linha) {
+
+        const distanciaElemento =
+            linha.querySelector(".distancia");
+
+        const situacaoElemento =
+            linha.querySelector(".situacao-texto");
+
+
+        if (!distanciaElemento || !situacaoElemento) {
+
+            return;
+
+        }
+
+
+        const texto =
+            distanciaElemento.textContent
+            .trim()
+            .toLowerCase();
+
+
+        /*
+        ==========================================
+        SEM DISTÂNCIA
+        ==========================================
+        */
+
+        if (
+            texto === "" ||
+            texto === "não informado" ||
+            texto === "-"
+        ) {
+
+            situacaoElemento.textContent =
+                "⚪ Não informado";
+
+            return;
+
+        }
+
+
+        /*
+        ==========================================
+        CONVERTER DISTÂNCIA
+        ==========================================
+        */
+
+        let distancia = parseFloat(
+            texto.replace(",", ".")
+        );
+
+
+        if (isNaN(distancia)) {
+
+            situacaoElemento.textContent =
+                "⚪ Não identificado";
+
+            return;
+
+        }
+
+
+        /*
+        ==========================================
+        CASO A DISTÂNCIA ESTEJA EM KM
+        ==========================================
+        */
+
+        if (texto.includes("km")) {
+
+            distancia = distancia * 1000;
+
+        }
+
+
+        /*
+        ==========================================
+        CLASSIFICAÇÃO
+        ==========================================
+        */
+
+        if (distancia <= 100) {
+
+            situacaoElemento.textContent =
+                "🟢 Dentro do local";
+
+        }
+
+        else if (distancia <= 500) {
+
+            situacaoElemento.textContent =
+                "🟡 Atenção";
+
+        }
+
+        else {
+
+            situacaoElemento.textContent =
+                "🔴 Fora do local";
+
+        }
+
+    });
+
+});
+
+</script>
+
 
 </body>
 
 </html>
-<footer class="footer">
-    <hr>
-
-    <p><strong>Sistema de Controle de Horas – Floresta Jr.</strong></p>
-
-    <p>Versão 2.0 • Gestão 2026/2</p>
-
-    <p>Desenvolvido por <strong>Mateus Gabriel de Souza</strong></p>
-
-    <p>Diretor de Qualidade – Gestão 2026/2</p>
-
-    <small>© 2026 Floresta Jr. Todos os direitos reservados.</small>
-</footer>

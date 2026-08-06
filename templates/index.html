@@ -1,15 +1,18 @@
 <!DOCTYPE html>
+
 <html lang="pt-BR">
 
 <head>
 
-    <meta charset="UTF-8">
+```
+<meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Controle de Horas - Floresta Jr</title>
+<title>Controle de Horas - Floresta Jr</title>
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+```
 
 </head>
 
@@ -19,52 +22,58 @@
 
 <header>
 
-    <h1>🌳 Controle de Horas</h1>
+```
+<h1>🌳 Controle de Horas</h1>
 
-    <h3>Floresta Jr 2026/2</h3>
+<h3>Floresta Jr 2026/2</h3>
+```
 
 </header>
 
-
 <!-- ========================= -->
+
 <!-- RANKING -->
+
 <!-- ========================= -->
 
 <section class="card">
 
-    <h2>🏆 Ranking Semanal</h2>
+```
+<h2>🏆 Ranking Semanal</h2>
 
-    <div class="ranking">
+<div class="ranking">
 
-    {% if ranking %}
+{% if ranking %}
 
-        {% for pessoa in ranking %}
+    {% for pessoa in ranking %}
 
-        <div class="ranking-item">
+    <div class="ranking-item">
 
-            <span>{{ pessoa.pos }}</span>
+        <span>{{ pessoa.pos }}</span>
 
-            <strong>{{ pessoa.nome }}</strong>
+        <strong>{{ pessoa.nome }}</strong>
 
-            <span>{{ pessoa.total }}</span>
-
-        </div>
-
-        {% endfor %}
-
-    {% else %}
-
-        <p>Nenhum registro encontrado.</p>
-
-    {% endif %}
+        <span>{{ pessoa.total }}</span>
 
     </div>
 
+    {% endfor %}
+
+{% else %}
+
+    <p>Nenhum registro encontrado.</p>
+
+{% endif %}
+
+</div>
+```
+
 </section>
 
-
 <!-- ========================= -->
+
 <!-- ENTRADA -->
+
 <!-- ========================= -->
 
 <section class="card">
@@ -87,9 +96,13 @@
 
 </select>
 
+<!--
+A distância NÃO aparece visualmente.
+Ela continua sendo calculada pelo JavaScript
+e enviada ao servidor.
+-->
 
 <input type="hidden" name="distancia" id="distancia">
-
 
 <button type="submit">
 
@@ -102,7 +115,9 @@ Registrar Entrada
 </section>
 
 <!-- ========================= -->
+
 <!-- SAÍDA -->
+
 <!-- ========================= -->
 
 <section class="card">
@@ -135,10 +150,10 @@ Registrar Saída
 
 </section>
 
-
-
 <!-- ========================= -->
+
 <!-- META -->
+
 <!-- ========================= -->
 
 <section class="card">
@@ -179,10 +194,10 @@ style="width:{{ pessoa.porcentagem }}%;">
 
 </section>
 
-
-
 <!-- ========================= -->
+
 <!-- REGISTROS -->
+
 <!-- ========================= -->
 
 <section class="card">
@@ -205,8 +220,6 @@ style="width:{{ pessoa.porcentagem }}%;">
 
 <th>Total</th>
 
-<th>Distância</th>
-
 </tr>
 
 </thead>
@@ -228,8 +241,6 @@ style="width:{{ pessoa.porcentagem }}%;">
 <td>{{ registro.saida or "-" }}</td>
 
 <td>{{ registro.total or "-" }}</td>
-
-<td>{{ registro.distancia or "-" }}</td>
 
 </tr>
 
@@ -255,10 +266,10 @@ Nenhum registro encontrado.
 
 </section>
 
-
-
 <!-- ========================= -->
+
 <!-- TOTAL SEMANAL -->
+
 <!-- ========================= -->
 
 <section class="card">
@@ -299,10 +310,10 @@ Nenhum registro encontrado.
 
 </section>
 
-
-
 <!-- ========================= -->
+
 <!-- ADMIN -->
+
 <!-- ========================= -->
 
 <section class="card">
@@ -318,6 +329,12 @@ class="botao-admin">
 </section>
 
 </div>
+
+<!-- ========================= -->
+
+<!-- JAVASCRIPT DA LOCALIZAÇÃO -->
+
+<!-- ========================= -->
 
 <script>
 
@@ -343,13 +360,15 @@ formEntrada.addEventListener("submit", function(event){
 
         function(position){
 
+            // Coordenadas da Floresta Jr
 
-            // Coordenadas da Floresta Jr (exemplo)
             const latFloresta = -21.225877;
+
             const lonFloresta = -44.974395;
 
 
             const lat = position.coords.latitude;
+
             const lon = position.coords.longitude;
 
 
@@ -363,11 +382,13 @@ formEntrada.addEventListener("submit", function(event){
             );
 
 
+            // A distância fica escondida para o membro,
+            // mas é enviada para o banco de dados.
+
             document.getElementById("distancia").value = distancia;
 
 
             formEntrada.submit();
-
 
         },
 
@@ -379,7 +400,8 @@ formEntrada.addEventListener("submit", function(event){
             );
 
 
-            document.getElementById("distancia").value = "Não informado";
+            document.getElementById("distancia").value =
+                "Não informado";
 
 
             formEntrada.submit();
@@ -391,28 +413,27 @@ formEntrada.addEventListener("submit", function(event){
 });
 
 
-
 function calcularDistancia(lat1, lon1, lat2, lon2){
-
 
     const R = 6371000;
 
 
-    const dLat = (lat2-lat1) * Math.PI / 180;
+    const dLat =
+        (lat2 - lat1) * Math.PI / 180;
 
-    const dLon = (lon2-lon1) * Math.PI / 180;
+    const dLon =
+        (lon2 - lon1) * Math.PI / 180;
 
 
     const a =
 
-        Math.sin(dLat/2)**2 +
+        Math.sin(dLat / 2) ** 2 +
 
-        Math.cos(lat1*Math.PI/180) *
+        Math.cos(lat1 * Math.PI / 180) *
 
-        Math.cos(lat2*Math.PI/180) *
+        Math.cos(lat2 * Math.PI / 180) *
 
-        Math.sin(dLon/2)**2;
-
+        Math.sin(dLon / 2) ** 2;
 
 
     const c =
@@ -421,39 +442,64 @@ function calcularDistancia(lat1, lon1, lat2, lon2){
 
             Math.sqrt(a),
 
-            Math.sqrt(1-a)
+            Math.sqrt(1 - a)
 
         );
 
 
-    const metros = R*c;
+    const metros = R * c;
 
 
-    if(metros < 1000){
+    if (metros < 1000){
 
         return Math.round(metros) + " m";
 
     }
 
 
-    return (metros/1000).toFixed(2) + " km";
+    return (metros / 1000).toFixed(2) + " km";
 
 }
 
 </script>
+
 </body>
 
 </html>
+
+<!-- ========================= -->
+
+<!-- RODAPÉ -->
+
+<!-- ========================= -->
+
 <footer class="footer">
-    <hr>
 
-    <p><strong>Sistema de Controle de Horas – Floresta Jr.</strong></p>
+```
+<hr>
 
-    <p>Versão 2.0 • Gestão 2026/2</p>
+<p>
+    <strong>
+        Sistema de Controle de Horas – Floresta Jr.
+    </strong>
+</p>
 
-    <p>Desenvolvido por <strong>Mateus Gabriel de Souza</strong></p>
+<p>
+    Versão 3.0 • Gestão 2026/2
+</p>
 
-    <p>Diretor de Qualidade – Gestão 2026/2</p>
+<p>
+    Desenvolvido por
+    <strong>Mateus Gabriel de Souza</strong>
+</p>
 
-    <small>© 2026 Floresta Jr. Todos os direitos reservados.</small>
+<p>
+    Diretor de Qualidade – Gestão 2026/2
+</p>
+
+<small>
+    © 2026 Floresta Jr. Todos os direitos reservados.
+</small>
+```
+
 </footer>
