@@ -11,6 +11,5 @@ criar_banco()
 
 registrar_rotas(app)
 
-
 if __name__ == "__main__":
     app.run(debug=True)

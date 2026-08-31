@@ -1,9 +1,9 @@
 MEMBROS = [
 
     "Adla Camilla M. da Silva",
-    "Ana Beatriz de Faria do Nascimento",
-    "Brendo Adriano Alves Freire",
+    "Bruno Fonseca Silva Soares", 
     "Carlos Augusto Corrêa",
+    "Gabriela Cardoso Brito Carvalho",
     "Giulliana Pivato Campos",
     "Iago de Souza Reis",
     "Iago Lopes Sereno",
@@ -16,16 +16,17 @@ MEMBROS = [
     "Luiz Felipe dos Reis Bonatti",
     "Luiz Otávio de Souza Pereira",
     "Luiz Otávio Fernandes de Oliveira",
+    "Mariana Loza Santos",
     "Marcos Vinícius de Sousa",
     "Marta Helena Pereira",
     "Mateus Gabriel de Souza",
     "Mateus Hebert Dias Pereira",
-    "Matheus Moraes",
-    "Michelly Maira Fernandes",
     "Nhaumy Laysa S. Januario",
     "Pedro Henrique Onofri Gomes",
     "Rita Helena Ribeiro de Souza",
     "Ronnie Von Luis Júnior",
-    "Tiago Freire Elias"
+    "Tiago Freire Elias",
+    "Yasmin Camille Zanata de Paula",
+    "Yasmin Felizardo Ribeiro"
 
 ]
