@@ -1,287 +1,538 @@
-/* ========================= */
-/* CONFIGURAÇÕES GERAIS */
-/* ========================= */
+/* =========================
+   CONFIGURAÇÕES GERAIS
+   ========================= */
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial, Helvetica, sans-serif;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
-body{
+body {
+    background:
+        radial-gradient(circle at 10% 10%, rgba(34, 139, 84, 0.05), transparent 25%),
+        radial-gradient(circle at 90% 90%, rgba(22, 101, 52, 0.04), transparent 25%),
+        #f3f7f4;
 
-    background:#eef5ef;
-
-    color:#1f2937;
-
-    padding:30px;
-
+    color: #26352c;
+    padding: 30px;
+    line-height: 1.6;
 }
 
-.container{
+/* textura extremamente suave */
 
-    width:95%;
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.25;
 
-    max-width:1200px;
+    background-image:
+        linear-gradient(
+            45deg,
+            rgba(20, 83, 45, 0.015) 25%,
+            transparent 25%
+        );
 
-    margin:auto;
-
+    background-size: 8px 8px;
+    z-index: -1;
 }
 
-/* ========================= */
-/* CABEÇALHO */
-/* ========================= */
-
-header{
-
-    background:#14532d;
-
-    color:white;
-
-    text-align:center;
-
-    padding:30px;
-
-    border-radius:15px;
-
-    margin-bottom:25px;
-
-    box-shadow:0px 5px 15px rgba(0,0,0,.15);
-
+.container {
+    width: 95%;
+    max-width: 1200px;
+    margin: auto;
 }
 
-header h1{
 
-    font-size:40px;
+/* =========================
+   CABEÇALHO
+   ========================= */
 
+header {
+    background:
+        linear-gradient(
+            135deg,
+            #1f6b43,
+            #14532d
+        );
+
+    color: white;
+    text-align: center;
+
+    padding: 32px;
+
+    border-radius: 18px;
+
+    margin-bottom: 28px;
+
+    box-shadow:
+        0 8px 25px rgba(20, 83, 45, 0.14);
+
+    border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
-header h3{
-
-    margin-top:10px;
-
-    font-weight:400;
-
+header h1 {
+    font-size: 38px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
 }
 
-/* ========================= */
-/* CARDS */
-/* ========================= */
-
-.card{
-
-    background:white;
-
-    border-radius:15px;
-
-    padding:25px;
-
-    margin-bottom:25px;
-
-    box-shadow:0 5px 15px rgba(0,0,0,.12);
-
+header h3 {
+    margin-top: 8px;
+    font-weight: 400;
+    font-size: 17px;
+    opacity: 0.9;
 }
 
-.card h2{
 
-    color:#166534;
+/* =========================
+   CARDS
+   ========================= */
 
-    margin-bottom:18px;
+.card {
+    background: rgba(255, 255, 255, 0.96);
 
+    border-radius: 16px;
+
+    padding: 26px;
+
+    margin-bottom: 25px;
+
+    border: 1px solid #e1ebe4;
+
+    box-shadow:
+        0 4px 14px rgba(20, 83, 45, 0.07);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
 }
 
-/* ========================= */
-/* FORMULÁRIOS */
-/* ========================= */
+.card:hover {
+    transform: translateY(-2px);
 
-form{
-
-    display:flex;
-
-    gap:15px;
-
-    flex-wrap:wrap;
-
+    box-shadow:
+        0 8px 22px rgba(20, 83, 45, 0.10);
 }
 
-select{
+.card h2 {
+    color: #246b45;
 
-    flex:1;
+    margin-bottom: 18px;
 
-    min-width:260px;
+    font-size: 23px;
 
-    padding:12px;
-
-    border-radius:8px;
-
-    border:1px solid #d1d5db;
-
-    font-size:16px;
-
+    font-weight: 600;
 }
 
-button{
 
-    padding:12px 24px;
+/* =========================
+   FORMULÁRIOS
+   ========================= */
 
-    border:none;
+form {
+    display: flex;
 
-    border-radius:8px;
+    gap: 15px;
 
-    cursor:pointer;
-
-    font-size:16px;
-
-    background:#15803d;
-
-    color:white;
-
-    transition:.3s;
-
+    flex-wrap: wrap;
 }
 
-button:hover{
+select {
+    flex: 1;
 
-    background:#166534;
+    min-width: 260px;
 
-}
-/* ========================= */
-/* BOTÃO ADMIN */
-/* ========================= */
+    padding: 13px 15px;
 
-.botao-admin{
+    border-radius: 10px;
 
-    display:inline-block;
+    border: 1px solid #cfdcd3;
 
-    width:100%;
+    background: #fbfdfb;
 
-    text-align:center;
+    color: #26352c;
 
-    text-decoration:none;
+    font-size: 16px;
 
-    background:#14532d;
+    outline: none;
 
-    color:white;
-
-    padding:15px;
-
-    border-radius:10px;
-
-    font-size:18px;
-
-    font-weight:bold;
-
-    transition:.3s;
-
+    transition: 0.25s;
 }
 
-.botao-admin:hover{
-
-    background:#0f3d20;
-
-}
-/* ===================================== */
-/* TABELA */
-/* ===================================== */
-
-table{
-
-    width:100%;
-
-    border-collapse:collapse;
-
-    margin-top:20px;
-
-    table-layout:fixed;
-
+select:hover {
+    border-color: #91b5a0;
 }
 
-th{
+select:focus {
+    border-color: #4f8f68;
 
-    background:#166534;
-
-    color:white;
-
-    padding:16px;
-
-    font-size:17px;
-
-    text-align:center;
-
+    box-shadow:
+        0 0 0 3px rgba(79, 143, 104, 0.12);
 }
 
-td{
 
-    padding:16px;
+/* =========================
+   BOTÕES
+   ========================= */
 
-    font-size:16px;
+button {
+    padding: 13px 25px;
 
-    text-align:center;
+    border: none;
 
-    border-bottom:1px solid #ddd;
+    border-radius: 10px;
 
-    word-wrap:break-word;
+    cursor: pointer;
 
+    font-size: 16px;
+
+    font-weight: 600;
+
+    background:
+        linear-gradient(
+            135deg,
+            #39845b,
+            #246b45
+        );
+
+    color: white;
+
+    box-shadow:
+        0 4px 10px rgba(36, 107, 69, 0.16);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
 }
 
-tr:hover{
+button:hover {
+    background:
+        linear-gradient(
+            135deg,
+            #2f754f,
+            #1f5c3b
+        );
 
-    background:#f4f4f4;
+    transform: translateY(-1px);
 
-}
-/* ================================= */
-/* BOTÕES DA ÁREA ADMINISTRATIVA */
-/* ================================= */
-
-.btn-verde{
-
-    display:inline-block;
-
-    background:#166534;
-
-    color:white;
-
-    padding:12px 22px;
-
-    border-radius:8px;
-
-    text-decoration:none;
-
-    border:none;
-
-    cursor:pointer;
-
-    font-size:16px;
-
+    box-shadow:
+        0 6px 14px rgba(36, 107, 69, 0.20);
 }
 
-.btn-verde:hover{
-
-    background:#14532d;
-
+button:active {
+    transform: translateY(0);
 }
 
-.btn-vermelho{
 
-    display:inline-block;
+/* =========================
+   BOTÃO ADMIN
+   ========================= */
 
-    background:#dc2626;
+.botao-admin {
+    display: inline-block;
 
-    color:white;
+    width: 100%;
 
-    padding:12px 22px;
+    text-align: center;
 
-    border-radius:8px;
+    text-decoration: none;
 
-    text-decoration:none;
+    background:
+        linear-gradient(
+            135deg,
+            #246b45,
+            #14532d
+        );
 
-    margin-left:10px;
+    color: white;
 
+    padding: 15px;
+
+    border-radius: 11px;
+
+    font-size: 17px;
+
+    font-weight: 600;
+
+    box-shadow:
+        0 4px 12px rgba(20, 83, 45, 0.12);
+
+    transition: 0.25s;
 }
 
-.btn-vermelho:hover{
+.botao-admin:hover {
+    background:
+        linear-gradient(
+            135deg,
+            #1f5c3b,
+            #104326
+        );
 
-    background:#b91c1c;
+    transform: translateY(-1px);
 
+    box-shadow:
+        0 7px 17px rgba(20, 83, 45, 0.18);
+}
+
+
+/* =========================
+   TABELA
+   ========================= */
+
+table {
+    width: 100%;
+
+    border-collapse: separate;
+
+    border-spacing: 0;
+
+    margin-top: 20px;
+
+    table-layout: fixed;
+
+    overflow: hidden;
+
+    border-radius: 12px;
+
+    border: 1px solid #e0e8e2;
+}
+
+th {
+    background:
+        linear-gradient(
+            135deg,
+            #397b55,
+            #246b45
+        );
+
+    color: white;
+
+    padding: 15px;
+
+    font-size: 16px;
+
+    font-weight: 600;
+
+    text-align: center;
+}
+
+td {
+    padding: 15px;
+
+    font-size: 15px;
+
+    text-align: center;
+
+    border-bottom: 1px solid #e7ece8;
+
+    word-wrap: break-word;
+
+    background: #ffffff;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+tr:hover td {
+    background: #f4f8f5;
+}
+
+
+/* =========================
+   BOTÕES DA ÁREA ADMINISTRATIVA
+   ========================= */
+
+.btn-verde {
+    display: inline-block;
+
+    background:
+        linear-gradient(
+            135deg,
+            #39845b,
+            #246b45
+        );
+
+    color: white;
+
+    padding: 11px 21px;
+
+    border-radius: 9px;
+
+    text-decoration: none;
+
+    border: none;
+
+    cursor: pointer;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    box-shadow:
+        0 3px 9px rgba(36, 107, 69, 0.12);
+
+    transition: 0.25s;
+}
+
+.btn-verde:hover {
+    background:
+        linear-gradient(
+            135deg,
+            #2f754f,
+            #1f5c3b
+        );
+
+    transform: translateY(-1px);
+}
+
+
+/* =========================
+   BOTÃO VERMELHO
+   ========================= */
+
+.btn-vermelho {
+    display: inline-block;
+
+    background: #c95a5a;
+
+    color: white;
+
+    padding: 11px 21px;
+
+    border-radius: 9px;
+
+    text-decoration: none;
+
+    margin-left: 10px;
+
+    border: none;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    box-shadow:
+        0 3px 9px rgba(180, 70, 70, 0.10);
+
+    transition: 0.25s;
+}
+
+.btn-vermelho:hover {
+    background: #b54c4c;
+
+    transform: translateY(-1px);
+}
+
+
+/* =========================
+   CAMPOS DE TEXTO
+   ========================= */
+
+input,
+textarea {
+    width: 100%;
+
+    padding: 13px 15px;
+
+    border: 1px solid #cfdcd3;
+
+    border-radius: 10px;
+
+    background: #fbfdfb;
+
+    color: #26352c;
+
+    font-size: 15px;
+
+    outline: none;
+
+    transition: 0.25s;
+}
+
+input:focus,
+textarea:focus {
+    border-color: #4f8f68;
+
+    box-shadow:
+        0 0 0 3px rgba(79, 143, 104, 0.12);
+
+    background: white;
+}
+
+
+/* =========================
+   LINKS
+   ========================= */
+
+a {
+    color: #246b45;
+
+    transition: 0.2s;
+}
+
+a:hover {
+    color: #14532d;
+}
+
+
+/* =========================
+   RESPONSIVIDADE
+   ========================= */
+
+@media (max-width: 768px) {
+
+    body {
+        padding: 15px;
+    }
+
+    .container {
+        width: 100%;
+    }
+
+    header {
+        padding: 25px 18px;
+    }
+
+    header h1 {
+        font-size: 30px;
+    }
+
+    header h3 {
+        font-size: 15px;
+    }
+
+    .card {
+        padding: 20px;
+    }
+
+    form {
+        flex-direction: column;
+    }
+
+    select,
+    button {
+        width: 100%;
+    }
+
+    table {
+        font-size: 13px;
+    }
+
+    th,
+    td {
+        padding: 10px 6px;
+    }
+
+    .btn-verde,
+    .btn-vermelho {
+        width: 100%;
+        text-align: center;
+        margin: 5px 0;
+    }
 }
