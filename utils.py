@@ -1,157 +1,71 @@
 from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo
+
 from banco import listar_registros
 
 
-# ==========================================
-# CONVERTE HH:MM PARA MINUTOS
-# ==========================================
+FUSO_BRASIL = ZoneInfo("America/Sao_Paulo")
+
 
 def hora_para_minutos(hora):
-
     try:
-
         h, m = map(int, hora.split(":"))
-
+        if h < 0 or not 0 <= m < 60:
+            return 0
         return h * 60 + m
-
-    except:
-
+    except (AttributeError, TypeError, ValueError):
         return 0
 
 
-# ==========================================
-# CONVERTE MINUTOS PARA HH:MM
-# ==========================================
-
 def minutos_para_hora(minutos):
+    minutos = max(0, int(minutos))
+    return f"{minutos // 60:02d}:{minutos % 60:02d}"
 
-    horas = minutos // 60
-
-    minutos = minutos % 60
-
-    return f"{horas:02d}:{minutos:02d}"
-
-
-# ==========================================
-# TOTAL SEMANAL
-# ==========================================
 
 def total_semanal():
-
     registros = listar_registros()
-
-    hoje = datetime.now()
-
-    semana = hoje - timedelta(days=7)
-
+    hoje = datetime.now(FUSO_BRASIL).date()
+    primeiro_dia = hoje - timedelta(days=6)
     totais = {}
 
-    for r in registros:
-
+    for registro in registros:
         try:
-
-            data = datetime.strptime(r["data"], "%d/%m/%Y")
-
-        except:
-
+            data = datetime.strptime(registro["data"], "%d/%m/%Y").date()
+        except (TypeError, ValueError):
+            continue
+        if not primeiro_dia <= data <= hoje:
             continue
 
-        if data < semana:
-
-            continue
-
-        nome = r["nome"]
-
-        minutos = hora_para_minutos(r["total"])
-
+        minutos = hora_para_minutos(registro["total"])
+        nome = registro["nome"]
         totais[nome] = totais.get(nome, 0) + minutos
 
-    resultado = []
+    resultado = [
+        {"nome": nome, "minutos": minutos, "total": minutos_para_hora(minutos)}
+        for nome, minutos in totais.items()
+    ]
+    return sorted(resultado, key=lambda item: item["minutos"], reverse=True)
 
-    for nome, minutos in totais.items():
-
-        resultado.append({
-
-            "nome": nome,
-
-            "minutos": minutos,
-
-            "total": minutos_para_hora(minutos)
-
-        })
-
-    resultado.sort(
-
-        key=lambda x: x["minutos"],
-
-        reverse=True
-
-    )
-
-    return resultado
-
-
-# ==========================================
-# TOP 3
-# ==========================================
 
 def ranking_top3():
-
-    ranking = total_semanal()
-
-    medalhas = ["🥇", "🥈", "🥉"]
-
-    top = []
-
-    for i, pessoa in enumerate(ranking[:3]):
-
-        top.append({
-
-            "pos": medalhas[i],
-
+    return [
+        {
+            "pos": str(posicao),
             "nome": pessoa["nome"],
+            "total": pessoa["total"],
+        }
+        for posicao, pessoa in enumerate(total_semanal()[:3], start=1)
+    ]
 
-            "total": pessoa["total"]
-
-        })
-
-    return top
-
-
-# ==========================================
-# META DAS 2 HORAS
-# ==========================================
 
 def progresso_meta():
-
-    dados = total_semanal()
-
+    meta_minutos = 120
     resultado = []
-
-    META = 120
-
-    for pessoa in dados:
-
-        porcentagem = int(
-
-            min(
-
-                pessoa["minutos"] / META * 100,
-
-                100
-
-            )
-
-        )
-
+    for pessoa in total_semanal():
+        porcentagem = min(int(pessoa["minutos"] / meta_minutos * 100), 100)
         resultado.append({
-
             "nome": pessoa["nome"],
-
             "total": pessoa["total"],
-
-            "porcentagem": porcentagem
-
+            "porcentagem": porcentagem,
         })
-
     return resultado
