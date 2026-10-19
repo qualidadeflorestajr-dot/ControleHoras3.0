@@ -6,8 +6,7 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 
 
-PASTA_PROJETO = Path(__file__).resolve().parent
-BANCO = Path(os.environ.get("CONTROLE_HORAS_DB", PASTA_PROJETO / "controle_horas.db"))
+BANCO = Path(os.environ.get("CONTROLE_HORAS_DB", "controle_horas.db"))
 FUSO_BRASIL = ZoneInfo("America/Sao_Paulo")
 
 
