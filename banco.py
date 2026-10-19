@@ -1,5 +1,6 @@
 import os
 import sqlite3
+from contextlib import contextmanager
 from datetime import datetime, timedelta
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -17,12 +18,22 @@ def conectar():
     return conn
 
 
+@contextmanager
+def transacao():
+    conn = conectar()
+    try:
+        with conn:
+            yield conn
+    finally:
+        conn.close()
+
+
 def agora():
     return datetime.now(FUSO_BRASIL)
 
 
 def criar_banco():
-    with conectar() as conn:
+    with transacao() as conn:
         conn.execute("""
             CREATE TABLE IF NOT EXISTS registros (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -43,7 +54,7 @@ def registrar_entrada(nome, distancia="Não informado"):
         return False
 
     instante = agora()
-    with conectar() as conn:
+    with transacao() as conn:
         conn.execute("BEGIN IMMEDIATE")
         aberta = conn.execute(
             "SELECT id FROM registros WHERE nome = ? AND COALESCE(saida, '') = '' LIMIT 1",
@@ -74,7 +85,7 @@ def registrar_saida(nome):
         return False
 
     instante = agora()
-    with conectar() as conn:
+    with transacao() as conn:
         conn.execute("BEGIN IMMEDIATE")
         registro = conn.execute(
             """SELECT id, entrada, data FROM registros
@@ -111,12 +122,12 @@ def registrar_saida(nome):
 
 
 def listar_registros():
-    with conectar() as conn:
+    with transacao() as conn:
         return conn.execute("SELECT * FROM registros ORDER BY id DESC").fetchall()
 
 
 def total_por_membro():
-    with conectar() as conn:
+    with transacao() as conn:
         linhas = conn.execute(
             "SELECT nome, total FROM registros WHERE COALESCE(total, '') <> ''"
         ).fetchall()
@@ -147,14 +158,14 @@ def total_geral():
 
 
 def buscar_registro(id_registro):
-    with conectar() as conn:
+    with transacao() as conn:
         return conn.execute(
             "SELECT * FROM registros WHERE id = ?", (id_registro,)
         ).fetchone()
 
 
 def atualizar_registro(id_registro, nome, data, entrada, saida, total, distancia):
-    with conectar() as conn:
+    with transacao() as conn:
         cursor = conn.execute(
             """UPDATE registros
                SET nome = ?, data = ?, entrada = ?, saida = ?, total = ?, distancia = ?
@@ -165,12 +176,12 @@ def atualizar_registro(id_registro, nome, data, entrada, saida, total, distancia
 
 
 def excluir_registro(id_registro):
-    with conectar() as conn:
+    with transacao() as conn:
         cursor = conn.execute("DELETE FROM registros WHERE id = ?", (id_registro,))
         return cursor.rowcount > 0
 
 
 def limpar_registros():
-    with conectar() as conn:
+    with transacao() as conn:
         cursor = conn.execute("DELETE FROM registros")
         return cursor.rowcount
