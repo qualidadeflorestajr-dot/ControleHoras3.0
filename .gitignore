@@ -1,1 +1,23 @@
-xxxxx
+# Ambientes e arquivos locais
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+.env.*
+!.env.example
+
+# Bancos de dados locais: não publicar cópias com dados de membros
+*.db
+*.sqlite
+*.sqlite3
+
+# Relatórios gerados
+relatorios/*.xlsx
+!relatorios/.gitkeep
+
+# Ferramentas e sistema operacional
+.pytest_cache/
+.coverage
+.DS_Store
+Thumbs.db
