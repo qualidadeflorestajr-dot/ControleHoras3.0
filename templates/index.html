@@ -1,497 +1,145 @@
 <!DOCTYPE html>
-
 <html lang="pt-BR">
-
 <head>
-
-<meta charset="UTF-8">
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Controle de Horas - Floresta Jr</title>
-
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Horas - Floresta Jr.</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-
 <body>
-
 <div class="container">
+    <header>
+        <h1>Controle de Horas</h1>
+        <h3>Floresta Jr. | Gestão 2026/2</h3>
+    </header>
 
-<header>
+    {% with mensagens = get_flashed_messages() %}
+      {% if mensagens %}
+        <section class="card mensagens" role="status">
+          {% for mensagem in mensagens %}<p>{{ mensagem }}</p>{% endfor %}
+        </section>
+      {% endif %}
+    {% endwith %}
 
-<h1>🌳 Controle de Horas</h1>
+    <section class="card">
+        <h2>Ranking semanal</h2>
+        <div class="ranking">
+        {% if ranking %}
+          {% for pessoa in ranking %}
+            <div class="ranking-item">
+              <span class="ranking-posicao">{{ pessoa.pos }}º</span>
+              <strong>{{ pessoa.nome }}</strong>
+              <span>{{ pessoa.total }}</span>
+            </div>
+          {% endfor %}
+        {% else %}
+          <p>Nenhum registro encontrado.</p>
+        {% endif %}
+        </div>
+    </section>
 
-<h3>Floresta Jr 2026/2</h3>
+    <section class="card">
+        <h2>Registrar entrada</h2>
+        <form action="{{ url_for('entrada') }}" method="POST" id="formEntrada">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+            <select name="nome" aria-label="Membro" required>
+                {% for membro in membros %}<option value="{{ membro }}">{{ membro }}</option>{% endfor %}
+            </select>
+            <input type="hidden" name="distancia" id="distancia" value="Não informado">
+            <button type="submit">Registrar entrada</button>
+        </form>
+        <p class="ajuda">A localização é opcional e depende da permissão do navegador.</p>
+    </section>
 
-</header>
+    <section class="card">
+        <h2>Registrar saída</h2>
+        <form action="{{ url_for('saida') }}" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+            <select name="nome" aria-label="Membro" required>
+                {% for membro in membros %}<option value="{{ membro }}">{{ membro }}</option>{% endfor %}
+            </select>
+            <button type="submit">Registrar saída</button>
+        </form>
+    </section>
 
-<!-- ========================= -->
+    <section class="card">
+        <h2>Meta semanal (2 horas)</h2>
+        {% if progresso %}
+          {% for pessoa in progresso %}
+            <p><strong>{{ pessoa.nome }}</strong> <span class="texto-secundario">({{ pessoa.total }})</span></p>
+            <div class="barra" role="progressbar" aria-valuenow="{{ pessoa.porcentagem }}" aria-valuemin="0" aria-valuemax="100">
+                <div class="preenchimento" style="width:{{ pessoa.porcentagem }}%;"></div>
+            </div>
+          {% endfor %}
+        {% else %}<p>Nenhum registro nesta semana.</p>{% endif %}
+    </section>
 
-<!-- RANKING -->
+    <section class="card">
+        <h2>Últimos registros</h2>
+        <div class="tabela-responsiva">
+        <table>
+            <thead><tr><th>Nome</th><th>Data</th><th>Entrada</th><th>Saída</th><th>Total</th></tr></thead>
+            <tbody>
+            {% if registros %}
+              {% for registro in registros %}
+                <tr><td>{{ registro.nome }}</td><td>{{ registro.data }}</td><td>{{ registro.entrada }}</td><td>{{ registro.saida or "-" }}</td><td>{{ registro.total or "-" }}</td></tr>
+              {% endfor %}
+            {% else %}
+              <tr><td colspan="5">Nenhum registro encontrado.</td></tr>
+            {% endif %}
+            </tbody>
+        </table>
+        </div>
+    </section>
 
-<!-- ========================= -->
+    <section class="card">
+        <h2>Total semanal</h2>
+        <div class="tabela-responsiva">
+        <table>
+            <thead><tr><th>Membro</th><th>Total</th></tr></thead>
+            <tbody>
+            {% for pessoa in semanal %}<tr><td>{{ pessoa.nome }}</td><td>{{ pessoa.total }}</td></tr>{% else %}<tr><td colspan="2">Nenhum registro nesta semana.</td></tr>{% endfor %}
+            </tbody>
+        </table>
+        </div>
+    </section>
 
-<section class="card">
-
-<h2>🏆 Ranking Semanal</h2>
-
-<div class="ranking">
-
-{% if ranking %}
-
-    {% for pessoa in ranking %}
-
-    <div class="ranking-item">
-
-        <span>{{ pessoa.pos }}</span>
-
-        <strong>{{ pessoa.nome }}</strong>
-
-        <span>{{ pessoa.total }}</span>
-
-    </div>
-
-    {% endfor %}
-
-{% else %}
-
-    <p>Nenhum registro encontrado.</p>
-
-{% endif %}
-
+    <section class="card">
+        <a href="{{ url_for('admin') }}" class="botao-admin">Área administrativa</a>
+    </section>
+    <footer class="footer">
+        <hr>
+        <p><strong>Sistema de Controle de Horas – Floresta Jr.</strong></p>
+        <p>Versão 3.0 • Gestão 2026/2</p>
+        <p>Desenvolvido pela equipe de Qualidade</p>
+        <small>© 2026 Floresta Jr. Todos os direitos reservados.</small>
+    </footer>
 </div>
-
-</section>
-
-<!-- ========================= -->
-
-<!-- ENTRADA -->
-
-<!-- ========================= -->
-
-<section class="card">
-
-<h2>🟢 Registrar Entrada</h2>
-
-<form action="/entrada" method="POST" id="formEntrada">
-
-<select name="nome">
-
-{% for membro in membros %}
-
-<option value="{{ membro }}">
-
-{{ membro }}
-
-</option>
-
-{% endfor %}
-
-</select>
-
-<!--
-A distância NÃO aparece visualmente.
-Ela continua sendo calculada pelo JavaScript
-e enviada ao servidor.
--->
-
-<input type="hidden" name="distancia" id="distancia">
-
-<button type="submit">
-
-Registrar Entrada
-
-</button>
-
-</form>
-
-</section>
-
-<!-- ========================= -->
-
-<!-- SAÍDA -->
-
-<!-- ========================= -->
-
-<section class="card">
-
-<h2>🔴 Registrar Saída</h2>
-
-<form action="/saida" method="POST">
-
-<select name="nome">
-
-{% for membro in membros %}
-
-<option value="{{ membro }}">
-
-{{ membro }}
-
-</option>
-
-{% endfor %}
-
-</select>
-
-<button type="submit">
-
-Registrar Saída
-
-</button>
-
-</form>
-
-</section>
-
-<!-- ========================= -->
-
-<!-- META -->
-
-<!-- ========================= -->
-
-<section class="card">
-
-<h2>🎯 Meta Semanal (2h)</h2>
-
-{% if progresso %}
-
-{% for pessoa in progresso %}
-
-<p>
-
-<strong>{{ pessoa.nome }}</strong>
-
-({{ pessoa.total }})
-
-</p>
-
-<div class="barra">
-
-<div class="preenchimento"
-
-style="width:{{ pessoa.porcentagem }}%;">
-
-</div>
-
-</div>
-
-<br>
-
-{% endfor %}
-
-{% else %}
-
-<p>Nenhum registro.</p>
-
-{% endif %}
-
-</section>
-
-<!-- ========================= -->
-
-<!-- REGISTROS -->
-
-<!-- ========================= -->
-
-<section class="card">
-
-<h2>📋 Últimos Registros</h2>
-
-<table>
-
-<thead>
-
-<tr>
-
-<th>Nome</th>
-
-<th>Data</th>
-
-<th>Entrada</th>
-
-<th>Saída</th>
-
-<th>Total</th>
-
-</tr>
-
-</thead>
-
-<tbody>
-
-{% if registros %}
-
-{% for registro in registros %}
-
-<tr>
-
-<td>{{ registro.nome }}</td>
-
-<td>{{ registro.data }}</td>
-
-<td>{{ registro.entrada }}</td>
-
-<td>{{ registro.saida or "-" }}</td>
-
-<td>{{ registro.total or "-" }}</td>
-
-</tr>
-
-{% endfor %}
-
-{% else %}
-
-<tr>
-
-<td colspan="5">
-
-Nenhum registro encontrado.
-
-</td>
-
-</tr>
-
-{% endif %}
-
-</tbody>
-
-</table>
-
-</section>
-
-<!-- ========================= -->
-
-<!-- TOTAL SEMANAL -->
-
-<!-- ========================= -->
-
-<section class="card">
-
-<h2>📊 Total Semanal</h2>
-
-<table>
-
-<thead>
-
-<tr>
-
-<th>Membro</th>
-
-<th>Total</th>
-
-</tr>
-
-</thead>
-
-<tbody>
-
-{% for pessoa in semanal %}
-
-<tr>
-
-<td>{{ pessoa.nome }}</td>
-
-<td>{{ pessoa.total }}</td>
-
-</tr>
-
-{% endfor %}
-
-</tbody>
-
-</table>
-
-</section>
-
-<!-- ========================= -->
-
-<!-- ADMIN -->
-
-<!-- ========================= -->
-
-<section class="card">
-
-<a href="/admin"
-
-class="botao-admin">
-
-⚙ Área do Administrador
-
-</a>
-
-</section>
-
-</div>
-
-<!-- ========================= -->
-
-<!-- JAVASCRIPT DA LOCALIZAÇÃO -->
-
-<!-- ========================= -->
-
 <script>
-
 const formEntrada = document.getElementById("formEntrada");
-
-formEntrada.addEventListener("submit", function(event){
-
+formEntrada.addEventListener("submit", function(event) {
     event.preventDefault();
-
-
-    if (!navigator.geolocation){
-
-        alert("Seu navegador não suporta localização.");
-
+    if (!navigator.geolocation) {
         formEntrada.submit();
-
         return;
-
     }
-
-
-    navigator.geolocation.getCurrentPosition(
-
-        function(position){
-
-            // Coordenadas da Floresta Jr
-
-            const latFloresta = -21.225877;
-
-            const lonFloresta = -44.974395;
-
-
-            const lat = position.coords.latitude;
-
-            const lon = position.coords.longitude;
-
-
-            const distancia = calcularDistancia(
-
-                lat,
-                lon,
-                latFloresta,
-                lonFloresta
-
-            );
-
-
-            // A distância fica escondida para o membro,
-            // mas é enviada para o banco de dados.
-
-            document.getElementById("distancia").value = distancia;
-
-
-            formEntrada.submit();
-
-        },
-
-
-        function(){
-
-            alert(
-                "Não foi possível obter localização."
-            );
-
-
-            document.getElementById("distancia").value =
-                "Não informado";
-
-
-            formEntrada.submit();
-
-        }
-
-    );
-
+    navigator.geolocation.getCurrentPosition(function(position) {
+        const rad = Math.PI / 180;
+        const lat1 = position.coords.latitude * rad;
+        const lat2 = -21.225877 * rad;
+        const dLat = (-21.225877 - position.coords.latitude) * rad;
+        const dLon = (-44.974395 - position.coords.longitude) * rad;
+        const a = Math.sin(dLat / 2) ** 2 +
+            Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLon / 2) ** 2;
+        const metros = 6371000 * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        document.getElementById("distancia").value =
+            metros < 1000 ? Math.round(metros) + " m" : (metros / 1000).toFixed(2) + " km";
+        formEntrada.submit();
+    }, function() {
+        document.getElementById("distancia").value = "Não informado";
+        formEntrada.submit();
+    }, { timeout: 8000, maximumAge: 60000 });
 });
-
-
-function calcularDistancia(lat1, lon1, lat2, lon2){
-
-    const R = 6371000;
-
-
-    const dLat =
-        (lat2 - lat1) * Math.PI / 180;
-
-    const dLon =
-        (lon2 - lon1) * Math.PI / 180;
-
-
-    const a =
-
-        Math.sin(dLat / 2) ** 2 +
-
-        Math.cos(lat1 * Math.PI / 180) *
-
-        Math.cos(lat2 * Math.PI / 180) *
-
-        Math.sin(dLon / 2) ** 2;
-
-
-    const c =
-
-        2 * Math.atan2(
-
-            Math.sqrt(a),
-
-            Math.sqrt(1 - a)
-
-        );
-
-
-    const metros = R * c;
-
-
-    if (metros < 1000){
-
-        return Math.round(metros) + " m";
-
-    }
-
-
-    return (metros / 1000).toFixed(2) + " km";
-
-}
-
 </script>
-
 </body>
-
 </html>
-
-<!-- ========================= -->
-
-<!-- RODAPÉ -->
-
-<!-- ========================= -->
-
-<footer class="footer">
-
-<hr>
-
-<p>
-    <strong>
-        Sistema de Controle de Horas – Floresta Jr.
-    </strong>
-</p>
-
-<p>
-    Versão 3.0 • Gestão 2026/2
-</p>
-
-<p>
-    Desenvolvido por
-    <strong>Mateus Gabriel de Souza</strong>
-</p>
-
-<p>
-    Diretor de Qualidade – Gestão 2026/2
-</p>
-
-<small>
-    © 2026 Floresta Jr. Todos os direitos reservados.
-</small>
-
-</footer>
