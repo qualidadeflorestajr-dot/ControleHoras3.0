@@ -147,7 +147,7 @@ def registrar_rotas(app):
                     raise ValueError
             except (ValueError, TypeError):
                 flash("Confira o nome, a data e os horários informados.")
-                return render_template("editar.html", registro=registro)
+                return render_template("editar.html", registro=registro, membros=MEMBROS)
 
             if saida:
                 from datetime import timedelta
@@ -167,7 +167,7 @@ def registrar_rotas(app):
             flash("Registro atualizado com sucesso.")
             return redirect(url_for("admin"))
 
-        return render_template("editar.html", registro=registro)
+        return render_template("editar.html", registro=registro, membros=MEMBROS)
 
     @app.route("/excluir/<int:id_registro>", methods=["POST"])
     @admin_required
