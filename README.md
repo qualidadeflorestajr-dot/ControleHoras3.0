@@ -33,7 +33,7 @@ A aplicação exige `FLASK_SECRET_KEY`; a senha administrativa é lida de `ADMIN
 
 1. Faça checkout da branch de correção ou, depois de revisada, da versão aprovada.
 2. No painel Web, configure `FLASK_SECRET_KEY` e `ADMIN_PASSWORD` no ambiente da aplicação/WSGI.
-3. Confirme que `CONTROLE_HORAS_DB` aponta para o banco de dados existente. Por padrão, o app usa `controle_horas.db` na pasta do projeto; se o banco atual estiver em outro caminho, configure a variável para esse caminho **antes de recarregar**.
+3. Confirme que `CONTROLE_HORAS_DB` aponta para o arquivo SQLite já usado pela instalação. Para evitar migração acidental, o padrão continua sendo `controle_horas.db` relativo ao diretório de trabalho do processo, como no código anterior. Se o WSGI executar com outro diretório de trabalho, defina `CONTROLE_HORAS_DB` com o caminho absoluto do banco existente **antes de recarregar**.
 4. Instale as dependências no virtualenv associado ao site e recarregue a aplicação.
 5. Se a exportação falhar, abra **Web → Log files → Error log** e verifique o traceback. A geração Excel agora ocorre em memória, sem exigir permissão para gravar arquivo de relatório na pasta do servidor.
 
