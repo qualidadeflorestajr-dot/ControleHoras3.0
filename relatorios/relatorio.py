@@ -7,7 +7,7 @@ from openpyxl.styles import Alignment, Font, PatternFill
 from openpyxl.utils import get_column_letter
 
 from banco import listar_registros, total_por_membro, total_geral
-from utils import total_semanal
+from utils import minutos_para_hora, total_semanal
 
 
 VERDE = PatternFill(fill_type="solid", start_color="166534", end_color="166534")
@@ -53,10 +53,10 @@ def criar_relatorio():
     resumo = wb.create_sheet("Resumo")
     resumo.append(["Indicador", "Valor"])
     resumo.append(["Total acumulado", total_geral()])
-    resumo.append(["Total dos últimos 7 dias", sum(item["minutos"] for item in total_semanal()) // 60])
+    resumo.append(["Total dos últimos 7 dias", minutos_para_hora(sum(item["minutos"] for item in total_semanal()))])
     resumo.append(["Registros", len(registros)])
     resumo.append(["Membros com horas registradas", len(total_por_membro())])
-    resumo["B3"].number_format = '0" h"'
+    resumo["B3"].number_format = "@"
     formatar_cabecalho(resumo)
 
     ranking = wb.create_sheet("Ranking")
