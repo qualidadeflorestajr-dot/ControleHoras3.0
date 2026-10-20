@@ -1,107 +1,39 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Editar Registro</title>
-
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='style.css') }}">
-
+    <title>Editar registro | Controle de Horas</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-
 <body>
-
 <div class="container">
-
-    <div class="card">
-
-        <h1>✏️ Editar Registro</h1>
-
+    <header><h1>Editar registro</h1><h3>Controle de Horas | Floresta Jr.</h3></header>
+    {% with mensagens = get_flashed_messages() %}
+      {% if mensagens %}<section class="card mensagens" role="status">{% for mensagem in mensagens %}<p>{{ mensagem }}</p>{% endfor %}</section>{% endif %}
+    {% endwith %}
+    <section class="card">
         <form method="POST">
-
-            <label>Nome</label>
-
-            <input
-                type="text"
-                name="nome"
-                value="{{ registro.nome }}"
-                required
-            >
-
-            <label>Data</label>
-
-            <input
-                type="date"
-                name="data"
-                value="{{ registro.data }}"
-                required
-            >
-
-            <label>Entrada</label>
-
-            <input
-                type="time"
-                name="entrada"
-                value="{{ registro.entrada }}"
-                required
-            >
-
-            <label>Saída</label>
-
-            <input
-                type="time"
-                name="saida"
-                value="{{ registro.saida }}"
-                required
-            >
-
-            <label>Total</label>
-
-            <input
-                type="text"
-                name="total"
-                value="{{ registro.total }}"
-                required
-            >
-
-            <br><br>
-
-            <button type="submit" class="btn-verde">
-
-                💾 Salvar Alterações
-
-            </button>
-
-            <a href="/admin" class="btn-vermelho">
-
-                Cancelar
-
-            </a>
-
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+            <label for="nome">Nome</label>
+            <select id="nome" name="nome" required>
+                {% for membro in membros %}<option value="{{ membro }}" {% if membro == registro.nome %}selected{% endif %}>{{ membro }}</option>{% endfor %}
+            </select>
+            <label for="data">Data</label>
+            <input id="data" type="date" name="data" value="{{ registro.data.split('/')|reverse|join('-') }}" required>
+            <label for="entrada">Entrada</label>
+            <input id="entrada" type="time" name="entrada" value="{{ registro.entrada }}" required>
+            <label for="saida">Saída</label>
+            <input id="saida" type="time" name="saida" value="{{ registro.saida }}" >
+            <label for="distancia">Distância</label>
+            <input id="distancia" type="text" name="distancia" value="{{ registro.distancia or 'Não informado' }}" maxlength="40">
+            <div class="acoes-formulario">
+                <button type="submit">Salvar alterações</button>
+                <a href="{{ url_for('admin') }}" class="botao-secundario link-botao">Cancelar</a>
+            </div>
         </form>
-
-    </div>
-
+    </section>
+    <footer class="footer"><hr><p><strong>Sistema de Controle de Horas – Floresta Jr.</strong></p><small>© 2026 Floresta Jr. Todos os direitos reservados.</small></footer>
 </div>
-
 </body>
-
 </html>
-<footer class="footer">
-    <hr>
-
-    <p><strong>Sistema de Controle de Horas – Floresta Jr.</strong></p>
-
-    <p>Versão 3.0 • Gestão 2026/2</p>
-
-    <p>Desenvolvido por <strong>Mateus Gabriel de Souza</strong></p>
-
-    <p>Diretor de Qualidade – Gestão 2026/2</p>
-
-    <small>© 2026 Floresta Jr. Todos os direitos reservados.</small>
-</footer>

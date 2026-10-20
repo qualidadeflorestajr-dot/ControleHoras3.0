@@ -1,385 +1,128 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Administrador</title>
-
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='style.css') }}">
-
+    <title>Área administrativa | Controle de Horas</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-
 <body>
-
 <div class="container">
-
-<header>
-
-    <h1>⚙ Área Administrativa</h1>
-
-    <h3>Controle de Horas Floresta Jr 2026/2</h3>
-
-</header>
-
-
-<!-- ========================================== -->
-<!-- PAINEL DO ADMINISTRADOR -->
-<!-- ========================================== -->
-
-<section class="card">
-
-<h2>Painel do Administrador</h2>
-
-<div class="acoes-admin">
-
-    <a href="/exportar" class="botao-admin">
-        📄 Exportar Relatório
-    </a>
-
-    <a href="/limpar"
-       class="botao-admin"
-       onclick="return confirm('Tem certeza que deseja apagar TODOS os registros?');">
-
-        🧹 Limpar Todos os Registros
-
-    </a>
-
-    <a href="/logout" class="botao-admin">
-
-        🚪 Sair
-
-    </a>
-
-    <a href="/" class="botao-admin">
-
-        🏠 Voltar ao Sistema
-
-    </a>
-
+    <header>
+        <h1>Área administrativa</h1>
+        <h3>Controle de Horas | Floresta Jr. 2026/2</h3>
+    </header>
+    {% with mensagens = get_flashed_messages() %}
+      {% if mensagens %}<section class="card mensagens" role="status">{% for mensagem in mensagens %}<p>{{ mensagem }}</p>{% endfor %}</section>{% endif %}
+    {% endwith %}
+    <section class="card">
+        <h2>Painel do administrador</h2>
+        <div class="acoes-admin">
+            <a href="{{ url_for('exportar') }}" class="botao-admin">Exportar relatório Excel</a>
+            <form action="{{ url_for('limpar') }}" method="POST" onsubmit="return confirm('Tem certeza de que deseja apagar todos os registros? Esta ação não pode ser desfeita.');">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                <button type="submit" class="botao-perigo">Limpar todos os registros</button>
+            </form>
+            <form action="{{ url_for('logout') }}" method="POST">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                <button type="submit" class="botao-secundario">Sair</button>
+            </form>
+            <a href="{{ url_for('home') }}" class="botao-secundario link-botao">Voltar ao sistema</a>
+        </div>
+    </section>
+    <section class="card">
+        <h2>Gerenciar membros</h2>
+        <p class="ajuda">Adicione pessoas sem alterar o código. Ao remover alguém, os registros antigos são preservados.</p>
+        <form action="{{ url_for('adicionar_membro_rota') }}" method="POST" class="form-membro">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+            <label for="novo-membro">Nome do novo membro</label>
+            <input id="novo-membro" name="nome" type="text" maxlength="100" placeholder="Digite o nome completo" required>
+            <button type="submit">Adicionar membro</button>
+        </form>
+        <div class="tabela-responsiva">
+            <table>
+                <thead><tr><th>Membro ativo</th><th>Ação</th></tr></thead>
+                <tbody>
+                {% for membro in membros %}
+                <tr>
+                    <td>{{ membro }}</td>
+                    <td>
+                        <form action="{{ url_for('excluir_membro_rota') }}" method="POST" onsubmit="return confirm('Remover este membro da lista? Os registros antigos serão preservados.');">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                            <input type="hidden" name="nome" value="{{ membro }}">
+                            <button type="submit" class="botao-perigo botao-pequeno">Remover da lista</button>
+                        </form>
+                    </td>
+                </tr>
+                {% else %}
+                <tr><td colspan="2">Nenhum membro ativo.</td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+    <section class="card">
+        <h2>Registros administrativos</h2>
+        <p class="ajuda"><strong>Informação privada:</strong> a distância é exibida somente nesta área administrativa.</p>
+        <div class="tabela-responsiva">
+        <table>
+            <thead><tr><th>ID</th><th>Nome</th><th>Data</th><th>Entrada</th><th>Saída</th><th>Total</th><th>Distância</th><th>Situação</th><th>Ações</th></tr></thead>
+            <tbody>
+            {% for registro in registros %}
+            <tr>
+                <td>{{ registro.id }}</td><td>{{ registro.nome }}</td><td>{{ registro.data }}</td>
+                <td>{{ registro.entrada }}</td><td>{{ registro.saida or "-" }}</td><td>{{ registro.total or "-" }}</td>
+                <td class="distancia">{{ registro.distancia or "Não informado" }}</td>
+                <td class="situacao"><span class="situacao-texto">Não informado</span></td>
+                <td class="acoes-registro">
+                    <a class="btn-verde botao-pequeno link-botao" href="{{ url_for('editar', id_registro=registro.id) }}">Editar</a>
+                    <form action="{{ url_for('excluir', id_registro=registro.id) }}" method="POST" onsubmit="return confirm('Excluir este registro?');">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                        <button type="submit" class="botao-perigo botao-pequeno">Excluir</button>
+                    </form>
+                </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="9">Nenhum registro encontrado.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        </div>
+    </section>
+    <footer class="footer">
+        <hr><p><strong>Sistema de Controle de Horas – Floresta Jr.</strong></p>
+        <p>Versão 3.0 • Gestão 2026/2</p>
+        <small>© 2026 Floresta Jr. Todos os direitos reservados.</small>
+    </footer>
 </div>
-
-</section>
-
-
-<!-- ========================================== -->
-<!-- REGISTROS -->
-<!-- ========================================== -->
-
-<section class="card">
-
-<h2>📋 Registros Administrativos</h2>
-
-<p>
-
-🔒 <strong>Informação privada:</strong>
-a distância é exibida somente nesta área administrativa.
-
-</p>
-
-<table>
-
-<thead>
-
-<tr>
-
-<th>ID</th>
-
-<th>Nome</th>
-
-<th>Data</th>
-
-<th>Entrada</th>
-
-<th>Saída</th>
-
-<th>Total</th>
-
-<th>Distância</th>
-
-<th>Situação</th>
-
-<th>Ações</th>
-
-</tr>
-
-</thead>
-
-
-<tbody>
-
-{% for registro in registros %}
-
-<tr>
-
-<td>
-    {{ registro.id }}
-</td>
-
-
-<td>
-    {{ registro.nome }}
-</td>
-
-
-<td>
-    {{ registro.data }}
-</td>
-
-
-<td>
-    {{ registro.entrada }}
-</td>
-
-
-<td>
-    {{ registro.saida or "-" }}
-</td>
-
-
-<td>
-    {{ registro.total or "-" }}
-</td>
-
-
-<!-- ========================================== -->
-<!-- DISTÂNCIA -->
-<!-- ========================================== -->
-
-<td class="distancia">
-
-    {{ registro.distancia or "Não informado" }}
-
-</td>
-
-
-<!-- ========================================== -->
-<!-- SITUAÇÃO -->
-<!-- ========================================== -->
-
-<td class="situacao">
-
-    <span class="situacao-texto">
-
-        Analisando...
-
-    </span>
-
-</td>
-
-
-<!-- ========================================== -->
-<!-- AÇÕES -->
-<!-- ========================================== -->
-
-<td>
-
-    <a href="/editar/{{ registro.id }}"
-       title="Editar registro">
-
-        ✏️
-
-    </a>
-
-    &nbsp;&nbsp;
-
-    <a href="/excluir/{{ registro.id }}"
-       title="Excluir registro"
-       onclick="return confirm('Tem certeza que deseja excluir este registro?');">
-
-        🗑️
-
-    </a>
-
-</td>
-
-</tr>
-
-{% endfor %}
-
-
-{% if not registros %}
-
-<tr>
-
-<td colspan="9">
-
-    Nenhum registro encontrado.
-
-</td>
-
-</tr>
-
-{% endif %}
-
-</tbody>
-
-</table>
-
-</section>
-
-
-</div>
-
-
-<!-- ========================================== -->
-<!-- RODAPÉ -->
-<!-- ========================================== -->
-
-<footer class="footer">
-
-    <hr>
-
-    <p>
-        <strong>
-            Sistema de Controle de Horas – Floresta Jr.
-        </strong>
-    </p>
-
-    <p>
-        Versão 3.0 • Gestão 2026/2
-    </p>
-
-    <p>
-        Desenvolvido por
-        <strong>Mateus Gabriel de Souza</strong>
-    </p>
-
-    <p>
-        Diretor de Qualidade – Gestão 2026/2
-    </p>
-
-    <small>
-        © 2026 Floresta Jr. Todos os direitos reservados.
-    </small>
-
-</footer>
-
-
-<!-- ========================================== -->
-<!-- CLASSIFICAÇÃO DA DISTÂNCIA -->
-<!-- ========================================== -->
-
 <script>
-
-document.addEventListener("DOMContentLoaded", function () {
-
-    const linhas = document.querySelectorAll("tbody tr");
-
-    linhas.forEach(function (linha) {
-
-        const distanciaElemento =
-            linha.querySelector(".distancia");
-
-        const situacaoElemento =
-            linha.querySelector(".situacao-texto");
-
-
-        if (!distanciaElemento || !situacaoElemento) {
-
-            return;
-
-        }
-
-
-        const texto =
-            distanciaElemento.textContent
-            .trim()
-            .toLowerCase();
-
-
-        /*
-        ==========================================
-        SEM DISTÂNCIA
-        ==========================================
-        */
-
-        if (
-            texto === "" ||
-            texto === "não informado" ||
-            texto === "-"
-        ) {
-
-            situacaoElemento.textContent =
-                "⚪ Não informado";
-
-            return;
-
-        }
-
-
-        /*
-        ==========================================
-        CONVERTER DISTÂNCIA
-        ==========================================
-        */
-
-        let distancia = parseFloat(
-            texto.replace(",", ".")
-        );
-
-
-        if (isNaN(distancia)) {
-
-            situacaoElemento.textContent =
-                "⚪ Não identificado";
-
-            return;
-
-        }
-
-
-        /*
-        ==========================================
-        CASO A DISTÂNCIA ESTEJA EM KM
-        ==========================================
-        */
-
-        if (texto.includes("km")) {
-
-            distancia = distancia * 1000;
-
-        }
-
-
-        /*
-        ==========================================
-        CLASSIFICAÇÃO
-        ==========================================
-        */
-
-        if (distancia <= 100) {
-
-            situacaoElemento.textContent =
-                "🟢 Dentro do local";
-
-        }
-
-        else if (distancia <= 500) {
-
-            situacaoElemento.textContent =
-                "🟡 Atenção";
-
-        }
-
-        else {
-
-            situacaoElemento.textContent =
-                "🔴 Fora do local";
-
-        }
-
-    });
-
+document.querySelectorAll("tbody tr").forEach(function(linha) {
+    const distanciaElemento = linha.querySelector(".distancia");
+    const situacao = linha.querySelector(".situacao-texto");
+    if (!distanciaElemento || !situacao) return;
+    const texto = distanciaElemento.textContent.trim().toLowerCase();
+    if (!texto || texto === "não informado" || texto === "-") {
+        situacao.textContent = "Não informado";
+        situacao.className = "situacao-texto estado-neutro";
+        return;
+    }
+    let distancia = parseFloat(texto.replace(",", "."));
+    if (!Number.isFinite(distancia)) {
+        situacao.textContent = "Não identificado";
+        return;
+    }
+    if (texto.includes("km")) distancia *= 1000;
+    if (distancia <= 100) {
+        situacao.textContent = "Dentro do local";
+        situacao.className = "situacao-texto estado-ok";
+    } else if (distancia <= 500) {
+        situacao.textContent = "Atenção";
+        situacao.className = "situacao-texto estado-alerta";
+    } else {
+        situacao.textContent = "Fora do local";
+        situacao.className = "situacao-texto estado-erro";
+    }
 });
-
 </script>
-
-
 </body>
-
 </html>

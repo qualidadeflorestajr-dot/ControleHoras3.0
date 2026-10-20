@@ -1,0 +1,29 @@
+name: Testes da aplicação
+
+on:
+  push:
+    branches:
+      - main
+      - "fix/**"
+  pull_request:
+
+jobs:
+  testes:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixar código
+        uses: actions/checkout@v4
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Instalar dependências
+        run: pip install -r requirements.txt
+      - name: Verificar sintaxe
+        run: python -m py_compile app.py banco.py rotas.py utils.py relatorios/relatorio.py
+      - name: Executar testes
+        env:
+          FLASK_SECRET_KEY: test-secret-key-for-ci
+          ADMIN_PASSWORD: test-admin-password
+          COOKIE_SECURE: "0"
+        run: python -m unittest discover -s tests -v
