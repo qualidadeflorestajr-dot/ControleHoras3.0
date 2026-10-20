@@ -129,7 +129,7 @@ def encerrar_jornadas_expiradas():
 
 def registrar_entrada(nome, distancia="Não informado"):
     nome = (nome or "").strip()
-    if not nome or nome not in listar_membros():
+    if not nome:
         return False
     instante = agora()
     with transacao() as conn:
