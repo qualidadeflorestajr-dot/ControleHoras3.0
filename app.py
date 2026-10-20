@@ -4,7 +4,7 @@ import secrets
 
 from flask import Flask, abort, request, session
 
-from banco import criar_banco
+from banco import criar_banco, encerrar_jornadas_expiradas
 from rotas import registrar_rotas
 
 
@@ -31,6 +31,8 @@ def fornecer_token_csrf():
 
 @app.before_request
 def validar_csrf():
+    # Verifica jornadas vencidas em toda requisição recebida pela aplicação.
+    encerrar_jornadas_expiradas()
     if request.method == "POST":
         esperado = session.get("_csrf_token", "")
         recebido = request.form.get("csrf_token", "")
