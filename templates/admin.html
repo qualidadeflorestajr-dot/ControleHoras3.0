@@ -31,6 +31,37 @@
         </div>
     </section>
     <section class="card">
+        <h2>Gerenciar membros</h2>
+        <p class="ajuda">Adicione pessoas sem alterar o código. Ao remover alguém, os registros antigos são preservados.</p>
+        <form action="{{ url_for('adicionar_membro_rota') }}" method="POST" class="form-membro">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+            <label for="novo-membro">Nome do novo membro</label>
+            <input id="novo-membro" name="nome" type="text" maxlength="100" placeholder="Digite o nome completo" required>
+            <button type="submit">Adicionar membro</button>
+        </form>
+        <div class="tabela-responsiva">
+            <table>
+                <thead><tr><th>Membro ativo</th><th>Ação</th></tr></thead>
+                <tbody>
+                {% for membro in membros %}
+                <tr>
+                    <td>{{ membro }}</td>
+                    <td>
+                        <form action="{{ url_for('excluir_membro_rota') }}" method="POST" onsubmit="return confirm('Remover este membro da lista? Os registros antigos serão preservados.');">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                            <input type="hidden" name="nome" value="{{ membro }}">
+                            <button type="submit" class="botao-perigo botao-pequeno">Remover da lista</button>
+                        </form>
+                    </td>
+                </tr>
+                {% else %}
+                <tr><td colspan="2">Nenhum membro ativo.</td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+    <section class="card">
         <h2>Registros administrativos</h2>
         <p class="ajuda"><strong>Informação privada:</strong> a distância é exibida somente nesta área administrativa.</p>
         <div class="tabela-responsiva">
