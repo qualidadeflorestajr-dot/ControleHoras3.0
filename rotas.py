@@ -1,6 +1,7 @@
 import hmac
 import logging
 import os
+from datetime import datetime, timedelta
 from functools import wraps
 
 from flask import (
@@ -8,9 +9,9 @@ from flask import (
     send_file, session, url_for
 )
 
-from membros import MEMBROS
 from banco import (
-    atualizar_registro, buscar_registro, excluir_registro, limpar_registros,
+    adicionar_membro, atualizar_registro, buscar_registro, encerrar_jornadas_expiradas,
+    excluir_membro, excluir_registro, limpar_registros, listar_membros,
     listar_registros, registrar_entrada, registrar_saida,
 )
 from relatorios.relatorio import criar_relatorio, nome_arquivo_relatorio
@@ -34,9 +35,10 @@ def registrar_rotas(app):
 
     @app.route("/")
     def home():
+        encerrar_jornadas_expiradas()
         return render_template(
             "index.html",
-            membros=MEMBROS,
+            membros=listar_membros(),
             registros=listar_registros(),
             ranking=ranking_top3(),
             semanal=total_semanal(),
@@ -45,8 +47,9 @@ def registrar_rotas(app):
 
     @app.route("/entrada", methods=["POST"])
     def entrada():
+        encerrar_jornadas_expiradas()
         nome = request.form.get("nome", "").strip()
-        if nome not in MEMBROS:
+        if nome not in listar_membros():
             flash("Selecione um membro válido.")
             return redirect(url_for("home"))
 
@@ -62,20 +65,22 @@ def registrar_rotas(app):
 
     @app.route("/saida", methods=["POST"])
     def saida():
+        encerrar_jornadas_expiradas()
         nome = request.form.get("nome", "").strip()
-        if nome not in MEMBROS:
+        if nome not in listar_membros():
             flash("Selecione um membro válido.")
             return redirect(url_for("home"))
 
         if registrar_saida(nome):
             flash(f"Saída de {nome} registrada com sucesso.")
         else:
-            flash(f"Não foi encontrada uma entrada aberta para {nome}.")
+            flash(f"Não foi encontrada uma entrada aberta para {nome}. Se passaram 8 horas, o registro pode ter sido encerrado automaticamente com total de 02:00.")
         return redirect(url_for("home"))
 
     @app.route("/exportar", methods=["GET"])
     @admin_required
     def exportar():
+        encerrar_jornadas_expiradas()
         try:
             arquivo = criar_relatorio()
             return send_file(
@@ -91,9 +96,12 @@ def registrar_rotas(app):
 
     @app.route("/admin")
     def admin():
+        encerrar_jornadas_expiradas()
         if not session.get("admin"):
             return render_template("login_admin.html")
-        return render_template("admin.html", registros=listar_registros())
+        return render_template(
+            "admin.html", registros=listar_registros(), membros=listar_membros()
+        )
 
     @app.route("/login_admin", methods=["POST"])
     def login_admin():
@@ -119,55 +127,74 @@ def registrar_rotas(app):
         flash("Sessão encerrada.")
         return redirect(url_for("home"))
 
+    @app.route("/membros/adicionar", methods=["POST"])
+    @admin_required
+    def adicionar_membro_rota():
+        ok, mensagem = adicionar_membro(request.form.get("nome", ""))
+        flash(mensagem)
+        return redirect(url_for("admin"))
+
+    @app.route("/membros/excluir", methods=["POST"])
+    @admin_required
+    def excluir_membro_rota():
+        ok, mensagem = excluir_membro(request.form.get("nome", ""))
+        flash(mensagem)
+        return redirect(url_for("admin"))
+
     @app.route("/editar/<int:id_registro>", methods=["GET", "POST"])
     @admin_required
     def editar(id_registro):
+        encerrar_jornadas_expiradas()
         registro = buscar_registro(id_registro)
         if registro is None:
             flash("Registro não encontrado.")
             return redirect(url_for("admin"))
 
+        membros = listar_membros()
+        # Permite manter o nome histórico do registro mesmo se o membro foi desativado.
+        opcoes_membro = list(membros)
+        if registro["nome"] not in opcoes_membro:
+            opcoes_membro.append(registro["nome"])
+
         if request.method == "POST":
             nome = request.form.get("nome", "").strip()
             data_iso = request.form.get("data", "")
-            entrada = request.form.get("entrada", "")
-            saida = request.form.get("saida", "")
-            total = request.form.get("total", "").strip()
+            entrada_hora = request.form.get("entrada", "")
+            saida_hora = request.form.get("saida", "")
             distancia = request.form.get("distancia", "Não informado").strip()
 
-            from datetime import datetime
             try:
-                data = datetime.strptime(data_iso, "%Y-%m-%d").strftime("%d/%m/%Y")
-                datetime.strptime(entrada, "%H:%M")
-                if saida:
-                    datetime.strptime(saida, "%H:%M")
-                if total and (len(total.split(":")) != 2 or any(int(x) < 0 for x in total.split(":"))):
+                data_obj = datetime.strptime(data_iso, "%Y-%m-%d").date()
+                data = data_obj.strftime("%d/%m/%Y")
+                inicio = datetime.strptime(entrada_hora, "%H:%M")
+                if nome not in opcoes_membro:
                     raise ValueError
-                if nome not in MEMBROS:
-                    raise ValueError
+                if saida_hora:
+                    fim = datetime.strptime(saida_hora, "%H:%M")
+                    if fim < inicio:
+                        fim += timedelta(days=1)
+                    minutos = int((fim - inicio).total_seconds() // 60)
+                    if minutos >= 8 * 60:
+                        saida_hora = (inicio + timedelta(hours=8)).strftime("%H:%M")
+                        total = "02:00"
+                    else:
+                        total = f"{minutos // 60:02d}:{minutos % 60:02d}"
+                else:
+                    total = ""
             except (ValueError, TypeError):
                 flash("Confira o nome, a data e os horários informados.")
-                return render_template("editar.html", registro=registro, membros=MEMBROS)
-
-            if saida:
-                from datetime import timedelta
-                inicio = datetime.strptime(entrada, "%H:%M")
-                fim = datetime.strptime(saida, "%H:%M")
-                if fim < inicio:
-                    fim += timedelta(days=1)
-                minutos = int((fim - inicio).total_seconds() // 60)
-                total = f"{minutos // 60:02d}:{minutos % 60:02d}"
-            else:
-                total = ""
+                return render_template(
+                    "editar.html", registro=registro, membros=opcoes_membro
+                )
 
             atualizar_registro(
-                id_registro, nome, data, entrada, saida, total,
+                id_registro, nome, data, entrada_hora, saida_hora, total,
                 distancia[:40] or "Não informado",
             )
             flash("Registro atualizado com sucesso.")
             return redirect(url_for("admin"))
 
-        return render_template("editar.html", registro=registro, membros=MEMBROS)
+        return render_template("editar.html", registro=registro, membros=opcoes_membro)
 
     @app.route("/excluir/<int:id_registro>", methods=["POST"])
     @admin_required
@@ -184,6 +211,3 @@ def registrar_rotas(app):
         quantidade = limpar_registros()
         flash(f"Registros removidos: {quantidade}.")
         return redirect(url_for("admin"))
-
-    # A rota antiga que exportava e apagava dados foi deliberadamente removida:
-    # exportar um relatório nunca deve apagar os dados automaticamente.
