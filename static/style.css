@@ -1,19 +1,20 @@
-/* Identidade visual: verde floresta metalizado e acabamento corporativo. */
+/* Identidade visual: verde floresta escuro metalizado e acabamento profissional. */
 :root {
     color-scheme: light;
-    --verde-900: #173D2D;
-    --verde-800: #244D3B;
-    --verde-700: #547566;
+    --verde-900: #102D22;
+    --verde-800: #173D2D;
+    --verde-700: #244D3B;
+    --verde-metal: #315C49;
     --verde-100: #E4ECE7;
     --menta: #D2DED6;
-    --fundo: #F0F3F1;
+    --fundo: #EEF2EF;
     --texto: #26332E;
     --texto-suave: #68766F;
-    --borda: #CDD9D1;
+    --borda: #C8D5CC;
     --branco: #FFFFFF;
     --perigo: #A94442;
     --perigo-fundo: #FBEDEC;
-    --sombra: 0 8px 28px rgba(23, 61, 45, .10);
+    --sombra: 0 10px 30px rgba(16, 45, 34, .12), 0 2px 6px rgba(16, 45, 34, .06);
 }
 * { box-sizing: border-box; }
 html { min-height: 100%; }
@@ -21,28 +22,28 @@ body {
     margin: 0;
     padding: 28px 18px;
     background:
-        radial-gradient(circle at 8% 0%, rgba(84, 117, 102, .12), transparent 30rem),
-        radial-gradient(circle at 100% 35%, rgba(36, 77, 59, .08), transparent 28rem),
+        radial-gradient(ellipse at 10% 0%, rgba(49, 92, 73, .12), transparent 32rem),
+        radial-gradient(ellipse at 100% 35%, rgba(16, 45, 34, .07), transparent 30rem),
         var(--fundo);
     color: var(--texto);
     font: 16px/1.6 Arial, Helvetica, sans-serif;
 }
 .container { width: min(100%, 1220px); margin: 0 auto; }
 header {
-    padding: 34px 24px;
-    margin-bottom: 24px;
+    padding: 36px 24px;
+    margin-bottom: 26px;
     text-align: center;
-    color: white;
-    background: linear-gradient(115deg, #173D2D 0%, #547566 28%, #244D3B 53%, #6D8779 76%, #173D2D 100%);
-    box-shadow: 0 12px 30px rgba(23, 61, 45, .20);
-    border: 1px solid #6F887A;
+    color: #fff;
+    background: linear-gradient(120deg, #102D22 0%, #173D2D 24%, #315C49 48%, #1B4432 68%, #102D22 100%);
+    border: 1px solid #426A57;
+    box-shadow: 0 14px 32px rgba(16, 45, 34, .25), inset 0 1px 0 rgba(255,255,255,.14);
 }
-header h1 { margin: 0; font-size: clamp(1.8rem, 4vw, 2.5rem); line-height: 1.2; letter-spacing: -.03em; }
+header h1 { margin: 0; font-size: clamp(1.8rem, 4vw, 2.5rem); line-height: 1.2; letter-spacing: -.03em; text-shadow: 0 2px 5px rgba(0,0,0,.2); }
 header h3 { margin: 10px 0 0; font-size: 1rem; font-weight: 400; color: #E6F0E9; }
 .card {
     padding: clamp(18px, 3vw, 28px);
-    margin-bottom: 22px;
-    background: rgba(255,255,255,.97);
+    margin-bottom: 24px;
+    background: rgba(255,255,255,.98);
     border: 1px solid var(--borda);
     box-shadow: var(--sombra);
 }
@@ -65,16 +66,16 @@ label { flex: 0 0 100%; font-weight: 600; color: var(--verde-900); }
 select:focus, input:focus, textarea:focus {
     outline: none;
     border-color: var(--verde-700);
-    box-shadow: 0 0 0 3px rgba(84,117,102,.18);
+    box-shadow: 0 0 0 3px rgba(36,77,59,.18);
 }
 button, .botao-admin, .botao-secundario, .btn-verde, .btn-vermelho {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
-    min-height: 44px;
-    padding: 11px 17px;
-    border: 1px solid #6F887A;
+    min-height: 42px;
+    padding: 10px 16px;
+    border: 1px solid #426A57;
     font: inherit;
     font-weight: 700;
     text-align: center;
@@ -83,24 +84,26 @@ button, .botao-admin, .botao-secundario, .btn-verde, .btn-vermelho {
     transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
 }
 button, .botao-admin, .btn-verde {
-    color: white;
-    background: linear-gradient(135deg, #547566 0%, #244D3B 55%, #173D2D 100%);
-    box-shadow: 0 4px 10px rgba(23,61,45,.16);
+    color: #fff;
+    background: linear-gradient(135deg, #315C49 0%, #173D2D 48%, #102D22 100%);
+    box-shadow: 0 4px 9px rgba(16,45,34,.20), inset 0 1px 0 rgba(255,255,255,.13);
+    text-shadow: 0 1px 1px rgba(0,0,0,.12);
 }
 button:hover, .botao-admin:hover, .btn-verde:hover {
-    color: white;
-    background: linear-gradient(135deg, #648777 0%, #2C5B45 55%, #1C4935 100%);
+    color: #fff;
+    background: linear-gradient(135deg, #3A6A54 0%, #204B38 48%, #143626 100%);
     transform: translateY(-1px);
-    box-shadow: 0 7px 16px rgba(23,61,45,.22);
+    box-shadow: 0 7px 15px rgba(16,45,34,.25), inset 0 1px 0 rgba(255,255,255,.16);
 }
 .botao-secundario, .btn-vermelho {
     color: var(--verde-900);
     background: linear-gradient(135deg, #F5F8F5, #DCE7DF);
     border-color: #B7C9BD;
+    box-shadow: 0 3px 8px rgba(16,45,34,.08);
 }
 .botao-secundario:hover, .btn-vermelho:hover { color: var(--verde-900); background: #D2DED6; }
-.botao-perigo { color: #fff; background: linear-gradient(135deg, #B65B55, #913A38); border-color: #A44C47; box-shadow: none; }
-.botao-perigo:hover { color: #fff; background: linear-gradient(135deg, #A94B46, #7E302F); }
+.botao-perigo { color: #fff; background: linear-gradient(135deg, #B65B55, #913A38); border-color: #A44C47; box-shadow: 0 3px 8px rgba(110,35,32,.16); }
+.botao-perigo:hover { color: #fff; background: linear-gradient(135deg, #A94B46, #7E302F); box-shadow: 0 6px 12px rgba(110,35,32,.22); }
 .botao-pequeno { min-height: 34px; padding: 6px 10px; font-size: .85rem; }
 .link-botao { width: fit-content; }
 .botao-admin { width: 100%; }
@@ -109,22 +112,41 @@ button:hover, .botao-admin:hover, .btn-verde:hover {
 .acoes-admin form button { width: 100%; }
 .acoes-registro { min-width: 160px; }
 .acoes-registro form { display: inline-flex; }
-.acoes-registro .link-botao { margin: 0 6px 6px 0; vertical-align: middle; }
-.acoes-registro form { margin: 0 0 6px 0; vertical-align: middle; }
+.acoes-registro .link-botao { margin: 0 5px 5px; vertical-align: middle; }
+.acoes-registro form { margin: 0 5px 5px; vertical-align: middle; }
 .acoes-formulario { display: flex; flex-wrap: wrap; gap: 10px; width: 100%; margin-top: 8px; }
 .ranking { display: grid; gap: 10px; }
-.ranking-item { display: grid; grid-template-columns: 44px minmax(0,1fr) auto; align-items: center; gap: 12px; padding: 13px 15px; border: 1px solid var(--borda); background: linear-gradient(90deg, #F1F7F3, #FFFFFF); }
+.ranking-item { display: grid; grid-template-columns: 44px minmax(0,1fr) auto; align-items: center; gap: 12px; padding: 13px 15px; border: 1px solid var(--borda); background: linear-gradient(90deg, #F1F7F3, #FFFFFF); box-shadow: 0 3px 9px rgba(16,45,34,.05); }
 .ranking-posicao { display: grid; place-items: center; width: 34px; height: 34px; color: var(--verde-900); background: var(--menta); font-weight: 800; }
 .texto-secundario, .ajuda { color: var(--texto-suave); font-size: .92rem; }
 .ajuda { margin: 12px 0 0; }
 .barra { height: 10px; margin: 7px 0 20px; overflow: hidden; background: #E8EFEA; }
-.preenchimento { height: 100%; background: linear-gradient(90deg, #6D9A81, #244D3B); transition: width .3s ease; }
-.tabela-responsiva { width: 100%; overflow-x: auto; border: 1px solid var(--borda); }
+.preenchimento { height: 100%; background: linear-gradient(90deg, #426F58, #102D22); transition: width .3s ease; }
+.tabela-responsiva { width: 100%; overflow-x: auto; border: 1px solid var(--borda); box-shadow: 0 4px 12px rgba(16,45,34,.05); }
 table { width: 100%; border-collapse: collapse; min-width: 540px; }
-th { padding: 13px 12px; color: #fff; background: linear-gradient(100deg, #173D2D 0%, #244D3B 55%, #547566 100%); font-size: .9rem; font-weight: 700; text-align: left; white-space: nowrap; }
-td { padding: 12px; border-bottom: 1px solid #E4EBE6; background: white; text-align: left; overflow-wrap: anywhere; }
+th {
+    padding: 13px 12px;
+    color: #fff;
+    background: linear-gradient(105deg, #102D22 0%, #173D2D 45%, #315C49 72%, #173D2D 100%);
+    font-size: .9rem;
+    font-weight: 700;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+    text-shadow: 0 1px 2px rgba(0,0,0,.2);
+}
+td {
+    padding: 12px;
+    border-bottom: 1px solid #E1E9E3;
+    background: #fff;
+    text-align: center;
+    vertical-align: middle;
+    overflow-wrap: anywhere;
+}
+tbody tr:nth-child(even) td { background: #F7FAF8; }
 tbody tr:last-child td { border-bottom: 0; }
-tbody tr:hover td { background: #F3F8F4; }
+tbody tr:hover td { background: #EDF4EF; }
+td form { justify-content: center; }
 .mensagens { border-left: 4px solid var(--verde-700); background: #F4F9F5; }
 .mensagens p:last-child { margin-bottom: 0; }
 .estado-ok, .estado-alerta, .estado-erro, .estado-neutro { display: inline-block; padding: 4px 8px; font-size: .8rem; font-weight: 700; white-space: nowrap; }
