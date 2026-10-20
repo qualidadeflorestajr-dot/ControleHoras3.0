@@ -75,7 +75,7 @@
                 <td class="distancia">{{ registro.distancia or "Não informado" }}</td>
                 <td class="situacao"><span class="situacao-texto">Não informado</span></td>
                 <td class="acoes-registro">
-                    <a href="{{ url_for('editar', id_registro=registro.id) }}">Editar</a>
+                    <a class="btn-verde botao-pequeno link-botao" href="{{ url_for('editar', id_registro=registro.id) }}">Editar</a>
                     <form action="{{ url_for('excluir', id_registro=registro.id) }}" method="POST" onsubmit="return confirm('Excluir este registro?');">
                         <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                         <button type="submit" class="botao-perigo botao-pequeno">Excluir</button>
