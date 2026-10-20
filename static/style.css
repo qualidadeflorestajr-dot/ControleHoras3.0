@@ -1,19 +1,19 @@
 /* Identidade visual: verde florestal, acentos suaves e layout responsivo. */
 :root {
     color-scheme: light;
-    --verde-900: #174b35;
-    --verde-800: #1f6747;
-    --verde-700: #278257;
-    --verde-100: #e7f4eb;
-    --menta: #d8f3e4;
-    --fundo: #f3f7f5;
-    --texto: #23352c;
-    --texto-suave: #63746a;
-    --borda: #dce8e0;
+    --verde-900: #263b34;
+    --verde-800: #3e5b52;
+    --verde-700: #58776b;
+    --verde-100: #e5ebe8;
+    --menta: #d2ddd7;
+    --fundo: #f0f3f1;
+    --texto: #26332e;
+    --texto-suave: #68766f;
+    --borda: #d4ddd8;
     --branco: #ffffff;
     --perigo: #b94b54;
     --perigo-fundo: #fff0f0;
-    --sombra: 0 8px 28px rgba(23, 75, 53, .08);
+    --sombra: 0 8px 28px rgba(38, 59, 52, .10);
 }
 * { box-sizing: border-box; }
 html { min-height: 100%; }
@@ -35,7 +35,7 @@ header {
     color: white;
     border-radius: 18px;
     background: linear-gradient(125deg, var(--verde-800), var(--verde-900));
-    box-shadow: 0 12px 30px rgba(23, 75, 53, .16);
+    box-shadow: 0 12px 30px rgba(38, 59, 52, .16);
 }
 header h1 { margin: 0; font-size: clamp(1.8rem, 4vw, 2.5rem); line-height: 1.2; letter-spacing: -.03em; }
 header h3 { margin: 10px 0 0; font-size: 1rem; font-weight: 400; color: #e0f4e7; }
@@ -67,7 +67,7 @@ label { flex: 0 0 100%; font-weight: 600; color: var(--verde-900); }
 select:focus, input:focus, textarea:focus {
     outline: none;
     border-color: var(--verde-700);
-    box-shadow: 0 0 0 3px rgba(39,130,87,.14);
+    box-shadow: 0 0 0 3px rgba(88,119,107,.18);
 }
 button, .botao-admin, .botao-secundario, .btn-verde, .btn-vermelho {
     display: inline-flex;
@@ -88,9 +88,9 @@ button, .botao-admin, .botao-secundario, .btn-verde, .btn-vermelho {
 button, .botao-admin, .btn-verde {
     color: white;
     background: linear-gradient(135deg, var(--verde-700), var(--verde-800));
-    box-shadow: 0 4px 10px rgba(31,103,71,.13);
+    box-shadow: 0 4px 10px rgba(38,59,52,.13);
 }
-button:hover, .botao-admin:hover, .btn-verde:hover { color: white; transform: translateY(-1px); box-shadow: 0 7px 16px rgba(31,103,71,.18); }
+button:hover, .botao-admin:hover, .btn-verde:hover { color: white; transform: translateY(-1px); box-shadow: 0 7px 16px rgba(38,59,52,.18); }
 .botao-secundario, .btn-vermelho {
     color: var(--verde-900);
     background: var(--verde-100);
@@ -145,4 +145,40 @@ small { font-size: .82rem; }
     .acoes-admin { grid-template-columns: 1fr; }
     .ranking-item { grid-template-columns: 36px minmax(0,1fr) auto; gap: 8px; padding: 11px; }
     .acoes-formulario > * { width: 100%; }
+}
+
+
+/* Acabamento retangular e verde metálico */
+*,
+*::before,
+*::after {
+    border-radius: 0 !important;
+}
+header {
+    background: linear-gradient(125deg, #526b61 0%, #263b34 55%, #788b82 100%);
+}
+button, .botao-admin, .btn-verde {
+    background: linear-gradient(135deg, #60796e, #344c43);
+    border-color: #83948b;
+}
+th {
+    background: linear-gradient(90deg, #3e5b52, #536c62);
+}
+.form-membro {
+    align-items: end;
+    margin-bottom: 18px;
+}
+.form-membro label {
+    flex-basis: 100%;
+}
+.form-membro input {
+    flex: 1 1 280px;
+}
+.form-membro button {
+    flex: 0 0 auto;
+}
+@media (max-width: 720px) {
+    .form-membro button {
+        width: 100%;
+    }
 }
