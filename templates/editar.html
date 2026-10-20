@@ -17,7 +17,7 @@
             <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
             <label for="nome">Nome</label>
             <select id="nome" name="nome" required>
-                {% for membro in config.get('MEMBROS', []) %}<option value="{{ membro }}" {% if membro == registro.nome %}selected{% endif %}>{{ membro }}</option>{% endfor %}
+                {% for membro in membros %}<option value="{{ membro }}" {% if membro == registro.nome %}selected{% endif %}>{{ membro }}</option>{% endfor %}
             </select>
             <label for="data">Data</label>
             <input id="data" type="date" name="data" value="{{ registro.data.split('/')|reverse|join('-') }}" required>
