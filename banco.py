@@ -62,7 +62,7 @@ def criar_banco():
 def listar_membros():
     with transacao() as conn:
         return [linha["nome"] for linha in conn.execute(
-            "SELECT nome FROM membros WHERE ativo = 1 ORDER BY id"
+            "SELECT nome FROM membros WHERE ativo = 1 ORDER BY nome COLLATE NOCASE"
         ).fetchall()]
 
 
