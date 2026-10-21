@@ -6,6 +6,7 @@ venv/
 .env
 .env.*
 !.env.example
+instance/flask_secret_key
 
 # Bancos de dados locais: não publicar cópias com dados de membros
 *.db
