@@ -76,8 +76,14 @@
 
     <section class="card">
         <h2>Últimos registros</h2>
+        <div class="filtros-tabela" aria-label="Pesquisa dos últimos registros">
+            <div><label for="filtro-registros-home">Pesquisar por membro</label><input id="filtro-registros-home" type="search" placeholder="Digite um nome..." autocomplete="off"></div>
+            <div><label for="filtro-data-home">Filtrar data</label><input id="filtro-data-home" type="text" placeholder="DD/MM/AAAA" inputmode="numeric" autocomplete="off"></div>
+            <button type="button" id="limpar-filtros-home" class="botao-secundario">Limpar filtros</button>
+            <p id="resultado-filtros-home" class="ajuda" role="status" aria-live="polite"></p>
+        </div>
         <div class="tabela-responsiva">
-        <table>
+        <table id="tabela-registros-home">
             <thead><tr><th>Nome</th><th>Data</th><th>Entrada</th><th>Saída</th><th>Total</th></tr></thead>
             <tbody>
             {% if registros %}
@@ -140,6 +146,28 @@ formEntrada.addEventListener("submit", function(event) {
         formEntrada.submit();
     }, { timeout: 8000, maximumAge: 60000 });
 });
+const filtroRegistrosHome = document.getElementById("filtro-registros-home");
+const filtroDataHome = document.getElementById("filtro-data-home");
+const tabelaRegistrosHome = document.getElementById("tabela-registros-home");
+const resultadoFiltrosHome = document.getElementById("resultado-filtros-home");
+function filtrarRegistrosHome() {
+    const nome = filtroRegistrosHome.value.trim().toLocaleLowerCase("pt-BR");
+    const data = filtroDataHome.value.trim();
+    let visiveis = 0;
+    tabelaRegistrosHome.querySelectorAll("tbody tr").forEach(function(linha) {
+        const c = linha.querySelectorAll("td");
+        if (c.length < 5) return;
+        const corresponde = c[0].textContent.trim().toLocaleLowerCase("pt-BR").includes(nome) && c[1].textContent.trim().includes(data);
+        linha.hidden = !corresponde;
+        if (corresponde) visiveis++;
+    });
+    resultadoFiltrosHome.textContent = visiveis + (visiveis === 1 ? " registro exibido." : " registros exibidos.");
+}
+[filtroRegistrosHome, filtroDataHome].forEach(c => c.addEventListener("input", filtrarRegistrosHome));
+document.getElementById("limpar-filtros-home").addEventListener("click", function() {
+    filtroRegistrosHome.value = ""; filtroDataHome.value = ""; filtrarRegistrosHome();
+});
+filtrarRegistrosHome();
 </script>
 </body>
 </html>
