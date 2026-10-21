@@ -64,8 +64,15 @@
     <section class="card">
         <h2>Registros administrativos</h2>
         <p class="ajuda"><strong>Informação privada:</strong> a distância é exibida somente nesta área administrativa.</p>
+        <div class="filtros-tabela" aria-label="Filtros dos registros administrativos">
+            <div><label for="filtro-nome-admin">Pesquisar membro</label><input id="filtro-nome-admin" type="search" placeholder="Digite um nome..." autocomplete="off"></div>
+            <div><label for="filtro-data-admin">Filtrar data</label><input id="filtro-data-admin" type="text" placeholder="DD/MM/AAAA" inputmode="numeric" autocomplete="off"></div>
+            <div><label for="filtro-status-admin">Situação da jornada</label><select id="filtro-status-admin"><option value="">Todas as jornadas</option><option value="aberta">Sem saída registrada</option><option value="concluida">Com saída registrada</option></select></div>
+            <button type="button" id="limpar-filtros-admin" class="botao-secundario">Limpar filtros</button>
+            <p id="resultado-filtros-admin" class="ajuda" role="status" aria-live="polite"></p>
+        </div>
         <div class="tabela-responsiva">
-        <table>
+        <table id="tabela-registros-admin">
             <thead><tr><th>ID</th><th>Nome</th><th>Data</th><th>Entrada</th><th>Saída</th><th>Total</th><th>Distância</th><th>Situação</th><th>Ações</th></tr></thead>
             <tbody>
             {% for registro in registros %}
@@ -123,6 +130,33 @@ document.querySelectorAll("tbody tr").forEach(function(linha) {
         situacao.className = "situacao-texto estado-erro";
     }
 });
+const filtroNomeAdmin = document.getElementById("filtro-nome-admin");
+const filtroDataAdmin = document.getElementById("filtro-data-admin");
+const filtroStatusAdmin = document.getElementById("filtro-status-admin");
+const tabelaRegistrosAdmin = document.getElementById("tabela-registros-admin");
+const resultadoFiltrosAdmin = document.getElementById("resultado-filtros-admin");
+function filtrarRegistrosAdmin() {
+    const nome = filtroNomeAdmin.value.trim().toLocaleLowerCase("pt-BR");
+    const data = filtroDataAdmin.value.trim();
+    const status = filtroStatusAdmin.value;
+    let visiveis = 0;
+    tabelaRegistrosAdmin.querySelectorAll("tbody tr").forEach(function(linha) {
+        const c = linha.querySelectorAll("td");
+        if (c.length < 9) return;
+        const saida = c[4].textContent.trim();
+        const corresponde = c[1].textContent.trim().toLocaleLowerCase("pt-BR").includes(nome) &&
+            c[2].textContent.trim().includes(data) &&
+            (!status || (status === "aberta" ? (!saida || saida === "-") : (saida && saida !== "-")));
+        linha.hidden = !corresponde;
+        if (corresponde) visiveis++;
+    });
+    resultadoFiltrosAdmin.textContent = visiveis + (visiveis === 1 ? " registro exibido." : " registros exibidos.");
+}
+[filtroNomeAdmin, filtroDataAdmin, filtroStatusAdmin].forEach(c => c.addEventListener(c.tagName === "SELECT" ? "change" : "input", filtrarRegistrosAdmin));
+document.getElementById("limpar-filtros-admin").addEventListener("click", function() {
+    filtroNomeAdmin.value = ""; filtroDataAdmin.value = ""; filtroStatusAdmin.value = ""; filtrarRegistrosAdmin();
+});
+filtrarRegistrosAdmin();
 </script>
 </body>
 </html>
