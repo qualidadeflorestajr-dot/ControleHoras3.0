@@ -9,16 +9,32 @@ from rotas import registrar_rotas
 
 
 app = Flask(__name__)
+
+# Em Codespaces/desenvolvimento, permite iniciar sem configuração manual.
+# Em produção, mantenha FLASK_SECRET_KEY configurada no ambiente do servidor.
+secret_key = os.environ.get("FLASK_SECRET_KEY") or os.environ.get("SECRET_KEY")
+if not secret_key and (
+    os.environ.get("CODESPACES", "").lower() == "true"
+    or os.environ.get("FLASK_DEBUG", "").lower() == "true"
+):
+    secret_key = secrets.token_hex(32)
+    print(
+        "AVISO: FLASK_SECRET_KEY não definida; usando uma chave temporária "
+        "somente para desenvolvimento. Configure-a no ambiente de produção."
+    )
+
 app.config.update(
-    SECRET_KEY=os.environ.get("FLASK_SECRET_KEY") or os.environ.get("SECRET_KEY"),
+    SECRET_KEY=secret_key,
     SESSION_COOKIE_HTTPONLY=True,
     SESSION_COOKIE_SAMESITE="Lax",
-    SESSION_COOKIE_SECURE=os.environ.get("COOKIE_SECURE", "1").lower() not in {"0", "false", "no"},
+    SESSION_COOKIE_SECURE=os.environ.get("COOKIE_SECURE", "1").lower()
+    not in {"0", "false", "no"},
 )
 
 if not app.config["SECRET_KEY"]:
     raise RuntimeError(
-        "Configure a variável de ambiente FLASK_SECRET_KEY antes de iniciar a aplicação."
+        "Configure a variável de ambiente FLASK_SECRET_KEY antes de iniciar "
+        "a aplicação em produção."
     )
 
 
