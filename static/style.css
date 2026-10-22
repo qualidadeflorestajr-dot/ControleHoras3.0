@@ -407,3 +407,56 @@ body.pagina-admin {
 @media (prefers-reduced-motion: reduce) {
     .pagina-admin *, .pagina-admin *::before, .pagina-admin *::after { transition:none !important; scroll-behavior:auto !important; }
 }
+
+
+/* Refinamentos finais do painel administrativo: controles limpos e filtros recolhíveis. */
+.pagina-admin .admin-nav .nav-monograma {
+    display:inline-grid; place-items:center; flex:0 0 27px; width:27px; height:27px;
+    color:#c7ecd5; background:rgba(255,255,255,.08); border:1px solid rgba(205,241,218,.17);
+    border-radius:7px; font-size:.76rem; font-weight:800; letter-spacing:.02em;
+}
+.pagina-admin .admin-nav a.ativo .nav-monograma { color:#fff; background:#147a4e; border-color:#31966a; }
+.pagina-admin .acoes-admin { align-items:stretch; }
+.pagina-admin .acoes-admin > form { display:flex; width:100%; min-width:0; margin:0; }
+.pagina-admin .acoes-admin > form > button,
+.pagina-admin .acoes-admin > a { display:flex; align-items:center; justify-content:center; width:100%; min-width:0; min-height:52px; height:100%; box-sizing:border-box; text-align:center; line-height:1.4; }
+.pagina-admin .acoes-admin > form > button { flex:1 1 auto; }
+.pagina-admin .titulo-registros { align-items:center; }
+.pagina-admin .botao-filtro-admin {
+    display:inline-flex; align-items:center; justify-content:center; gap:9px; min-height:42px;
+    padding:9px 16px; color:#075a38; background:#f4faf6; border:1px solid #b9d9c6;
+    border-radius:8px !important; font-weight:750; cursor:pointer; box-shadow:0 2px 6px rgba(4,65,41,.05);
+    transition:background .18s ease,border-color .18s ease,box-shadow .18s ease;
+}
+.pagina-admin .botao-filtro-admin:hover,.pagina-admin .botao-filtro-admin.filtros-abertos {
+    color:#fff; background:#086b43; border-color:#086b43; box-shadow:0 4px 12px rgba(4,65,41,.16);
+}
+.pagina-admin .filtro-glyph { display:inline-grid; place-items:center; width:22px; height:22px; font-size:1.3rem; line-height:1; transform:rotate(90deg); }
+.pagina-admin .filtros-admin {
+    display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; align-items:end;
+    padding:18px; margin:0 0 18px; background:#f4faf6; border:1px solid #d8e9df; border-radius:10px !important;
+}
+.pagina-admin .filtros-admin[hidden] { display:none !important; }
+.pagina-admin .campo-filtro-admin { display:grid; gap:7px; min-width:0; }
+.pagina-admin .campo-filtro-admin label { color:#164c35; font-size:.86rem; font-weight:700; }
+.pagina-admin .campo-filtro-admin input,.pagina-admin .campo-filtro-admin select {
+    width:100%; min-width:0; min-height:44px; padding:10px 12px; color:#203b2e;
+    background:#fff; border:1px solid #c9dfd1; border-radius:7px !important; box-sizing:border-box;
+}
+.pagina-admin .campo-filtro-admin input:focus,.pagina-admin .campo-filtro-admin select:focus {
+    outline:3px solid rgba(8,119,71,.14); border-color:#087747;
+}
+.pagina-admin .acoes-filtro-admin { display:flex; grid-column:1/-1; align-items:center; justify-content:space-between; gap:12px; }
+.pagina-admin .acoes-filtro-admin button { min-height:40px; padding:9px 15px; }
+.pagina-admin #contador-filtros-admin { color:#426b54; font-size:.85rem; font-weight:650; }
+.pagina-admin tr[hidden] { display:none !important; }
+.pagina-admin .nenhum-filtro-admin { margin:12px 0 0; padding:12px; color:#52685a; background:#f6faf7; border:1px dashed #c9dfd1; border-radius:8px !important; }
+@media (max-width: 720px) {
+    .pagina-admin .acoes-admin > form > button,
+    .pagina-admin .acoes-admin > a { min-height:48px; }
+    .pagina-admin .botao-filtro-admin { min-height:40px; padding:8px 11px; }
+    .pagina-admin .filtros-admin { grid-template-columns:minmax(0,1fr); padding:13px; gap:12px; }
+    .pagina-admin .acoes-filtro-admin { grid-column:auto; align-items:stretch; flex-direction:column; }
+    .pagina-admin .acoes-filtro-admin button { width:100%; }
+    .pagina-admin #contador-filtros-admin { text-align:center; }
+}
