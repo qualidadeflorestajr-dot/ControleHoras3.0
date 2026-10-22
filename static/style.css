@@ -474,3 +474,26 @@ body.pagina-admin {
     background:rgba(255,255,255,.16);
     border-color:rgba(255,255,255,.3);
 }
+
+
+/* Ícones vetoriais monocromáticos inspirados na referência aprovada. */
+.pagina-admin .admin-nav .admin-nav-icon {
+    display:inline-flex; flex:0 0 27px; align-items:center; justify-content:center;
+    width:27px; height:27px; color:#fff !important;
+}
+.pagina-admin .admin-nav .admin-nav-icon svg {
+    display:block; width:23px; height:23px; fill:none; stroke:currentColor;
+    stroke-width:2; stroke-linecap:round; stroke-linejoin:round;
+}
+.pagina-admin .admin-nav a:first-child .admin-nav-icon svg { fill:currentColor; stroke:currentColor; }
+.pagina-admin .admin-nav a:first-child .admin-nav-icon svg path { fill:currentColor; }
+.pagina-admin .admin-nav a:hover .admin-nav-icon,
+.pagina-admin .admin-nav a.ativo .admin-nav-icon { color:#fff !important; }
+.pagina-admin .filtro-glyph {
+    display:inline-flex; align-items:center; justify-content:center;
+    width:22px; height:22px; transform:none;
+}
+.pagina-admin .filtro-glyph svg {
+    display:block; width:21px; height:21px; fill:currentColor;
+    stroke:currentColor; stroke-width:1.4; stroke-linejoin:round;
+}
