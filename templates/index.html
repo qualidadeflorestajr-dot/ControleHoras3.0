@@ -6,13 +6,30 @@
     <title>Controle de Horas - Floresta Jr.</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body>
-<div class="container">
-    <header>
-        <h1>Controle de Horas</h1>
-        <h3>Floresta Jr. | Gestão 2026/2</h3>
-    </header>
+<body class="pagina-inicial">
+<header class="topo-site">
+    <div class="topo-conteudo">
+        <div class="marca-site">
+            <div class="marca-folha" aria-hidden="true">
+                <svg viewBox="0 0 64 64" role="img">
+                    <path d="M51 7C29 8 11 19 10 38c0 11 8 18 18 16C47 50 54 27 51 7Z" fill="#159653" stroke="#D7F5DF" stroke-width="2"/>
+                    <path d="M13 54C24 40 32 29 47 14M26 39l-2-13m12 1 9 1M20 46l-9-2" fill="none" stroke="#F1FFF4" stroke-width="2.5" stroke-linecap="round"/>
+                    <path d="M8 57C22 49 31 37 43 21" fill="none" stroke="#8BD5A5" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+            </div>
+            <div>
+                <h1>CONTROLE DE HORAS</h1>
+                <p>FLORESTA JR. | GESTÃO 2026/2</p>
+            </div>
+        </div>
+        <a href="{{ url_for('admin') }}" class="botao-configuracao">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8.2a3.8 3.8 0 1 0 0 7.6 3.8 3.8 0 0 0 0-7.6Zm9 4.9v-2.2l-2.1-.7a7.5 7.5 0 0 0-.7-1.7l1-2-1.6-1.6-2 1a7.5 7.5 0 0 0-1.7-.7L13.2 3h-2.3l-.7 2.1a7.5 7.5 0 0 0-1.7.7l-2-1-1.6 1.6 1 2a7.5 7.5 0 0 0-.7 1.7l-2.1.7v2.3l2.1.7a7.5 7.5 0 0 0 .7 1.7l-1 2 1.6 1.6 2-1a7.5 7.5 0 0 0 1.7.7l.7 2.1h2.3l.7-2.1a7.5 7.5 0 0 0 1.7-.7l2 1 1.6-1.6-1-2a7.5 7.5 0 0 0 .7-1.7l2.1-.7Z" fill="currentColor"/></svg>
+            Configuração
+        </a>
+    </div>
+</header>
 
+<main class="container">
     {% with mensagens = get_flashed_messages() %}
       {% if mensagens %}
         <section class="card mensagens" role="status">
@@ -21,15 +38,18 @@
       {% endif %}
     {% endwith %}
 
-    <section class="card">
-        <h2>Ranking semanal</h2>
+    <section class="card bloco-ranking">
+        <div class="titulo-ranking">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4H3v3a5 5 0 0 0 4 4.9A5 5 0 0 0 10 15v2H7v3h10v-3h-3v-2a5 5 0 0 0 3-3.1A5 5 0 0 0 21 7V4h-4V2H7v2Zm0 5.8A2 2 0 0 1 5 7V6h2v3.8Zm10 0V6h2v1a2 2 0 0 1-2 2.8Z" fill="currentColor"/></svg>
+            <strong>Ranking semanal</strong>
+        </div>
         <div class="ranking">
         {% if ranking %}
           {% for pessoa in ranking %}
             <div class="ranking-item">
               <span class="ranking-posicao">{{ pessoa.pos }}º</span>
               <strong>{{ pessoa.nome }}</strong>
-              <span>{{ pessoa.total }}</span>
+              <span class="ranking-total">{{ pessoa.total }}</span>
             </div>
           {% endfor %}
         {% else %}
@@ -38,45 +58,36 @@
         </div>
     </section>
 
-    <section class="card">
-        <h2>Registrar entrada</h2>
-        <form action="{{ url_for('entrada') }}" method="POST" id="formEntrada">
-            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-            <select name="nome" aria-label="Membro" required>
-                {% for membro in membros %}<option value="{{ membro }}">{{ membro }}</option>{% endfor %}
-            </select>
-            <input type="hidden" name="distancia" id="distancia" value="Não informado">
-            <button type="submit">Registrar entrada</button>
-        </form>
+    <section class="card bloco-registro">
+        <h2><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2h2v2h6V2h2v2h3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h3V2Zm13 8H4v10h16V10ZM4 6v2h16V6H4Z" fill="currentColor"/></svg>Registrar</h2>
+        <div class="linha-registro">
+            <form action="{{ url_for('entrada') }}" method="POST" id="formEntrada">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                <select name="nome" aria-label="Membro para registrar entrada" required>
+                    {% for membro in membros %}<option value="{{ membro }}">{{ membro }}</option>{% endfor %}
+                </select>
+                <input type="hidden" name="distancia" id="distancia" value="Não informado">
+                <button type="submit" class="botao-registro">↪ ENTRADA</button>
+            </form>
+            <form action="{{ url_for('saida') }}" method="POST" id="formSaida">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                <select name="nome" aria-label="Membro para registrar saída" required>
+                    {% for membro in membros %}<option value="{{ membro }}">{{ membro }}</option>{% endfor %}
+                </select>
+                <button type="submit" class="botao-registro">SAÍDA ↗</button>
+            </form>
+        </div>
         <p class="ajuda">A localização é opcional e depende da permissão do navegador.</p>
     </section>
 
-    <section class="card">
-        <h2>Registrar saída</h2>
-        <form action="{{ url_for('saida') }}" method="POST">
-            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-            <select name="nome" aria-label="Membro" required>
-                {% for membro in membros %}<option value="{{ membro }}">{{ membro }}</option>{% endfor %}
-            </select>
-            <button type="submit">Registrar saída</button>
-        </form>
-    </section>
-
-    <section class="card">
-        <h2>Meta semanal (2 horas)</h2>
-        {% if progresso %}
-          {% for pessoa in progresso %}
-            <p><strong>{{ pessoa.nome }}</strong> <span class="texto-secundario">({{ pessoa.total }})</span></p>
-            <div class="barra" role="progressbar" aria-valuenow="{{ pessoa.porcentagem }}" aria-valuemin="0" aria-valuemax="100">
-                <div class="preenchimento" style="width:{{ pessoa.porcentagem }}%;"></div>
-            </div>
-          {% endfor %}
-        {% else %}<p>Nenhum registro nesta semana.</p>{% endif %}
-    </section>
-
-    <section class="card">
-        <h2>Últimos registros</h2>
-        <div class="filtros-tabela" aria-label="Pesquisa dos últimos registros">
+    <section class="card bloco-tabela">
+        <div class="titulo-com-filtro">
+            <h2><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm0 17a7 7 0 1 1 0-14 7 7 0 0 1 0 14Zm1-12h-2v6l4 2 1-1.7-3-1.5V7Z" fill="currentColor"/></svg>Últimos registros</h2>
+            <button type="button" id="alternar-filtros-home" class="botao-filtro" aria-label="Abrir filtros" aria-expanded="false" title="Filtros">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h18l-7 8v5l-4 2v-7L3 5Z" fill="currentColor"/></svg>
+            </button>
+        </div>
+        <div class="filtros-tabela filtros-recolhidos" id="painel-filtros-home" hidden aria-label="Filtros dos últimos registros">
             <div><label for="filtro-registros-home">Pesquisar por membro</label><input id="filtro-registros-home" type="search" placeholder="Digite um nome..." autocomplete="off"></div>
             <div><label for="filtro-data-home">Filtrar data</label><input id="filtro-data-home" type="text" placeholder="DD/MM/AAAA" inputmode="numeric" autocomplete="off"></div>
             <button type="button" id="limpar-filtros-home" class="botao-secundario">Limpar filtros</button>
@@ -98,8 +109,8 @@
         </div>
     </section>
 
-    <section class="card">
-        <h2>Total semanal</h2>
+    <section class="card bloco-semanal">
+        <h2><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 13h4v8H4v-8Zm6-10h4v18h-4V3Zm6 6h4v12h-4V9Z" fill="currentColor"/></svg>Total semanal</h2>
         <div class="tabela-responsiva">
         <table>
             <thead><tr><th>Membro</th><th>Total</th></tr></thead>
@@ -110,17 +121,15 @@
         </div>
     </section>
 
-    <section class="card">
-        <a href="{{ url_for('admin') }}" class="botao-admin">Área administrativa</a>
-    </section>
-    <footer class="footer">
-        <hr>
-        <p><strong>Sistema de Controle de Horas – Floresta Jr.</strong></p>
-        <p>Versão 3.0 • Gestão 2026/2</p>
-        <p>Desenvolvido pela equipe de Qualidade</p>
-        <small>© 2026 Floresta Jr. Todos os direitos reservados.</small>
+    <footer class="footer footer-painel">
+        <a href="{{ url_for('admin') }}" class="link-area-admin"><span class="mini-folha" aria-hidden="true">◆</span> Configuração</a>
+        <div class="texto-footer">
+            <p><strong>Sistema de Controle de Horas – Floresta Jr.</strong></p>
+            <p>Gestão 2026/2</p>
+            <small>© 2026 Floresta Jr. – Todos os direitos reservados.</small>
+        </div>
     </footer>
-</div>
+</main>
 <script>
 const formEntrada = document.getElementById("formEntrada");
 formEntrada.addEventListener("submit", function(event) {
@@ -145,6 +154,15 @@ formEntrada.addEventListener("submit", function(event) {
         document.getElementById("distancia").value = "Não informado";
         formEntrada.submit();
     }, { timeout: 8000, maximumAge: 60000 });
+});
+const painelFiltrosHome = document.getElementById("painel-filtros-home");
+const alternarFiltrosHome = document.getElementById("alternar-filtros-home");
+alternarFiltrosHome.addEventListener("click", function() {
+    const abrir = painelFiltrosHome.hidden;
+    painelFiltrosHome.hidden = !abrir;
+    alternarFiltrosHome.setAttribute("aria-expanded", String(abrir));
+    alternarFiltrosHome.setAttribute("aria-label", abrir ? "Fechar filtros" : "Abrir filtros");
+    if (abrir) document.getElementById("filtro-registros-home").focus();
 });
 const filtroRegistrosHome = document.getElementById("filtro-registros-home");
 const filtroDataHome = document.getElementById("filtro-data-home");
