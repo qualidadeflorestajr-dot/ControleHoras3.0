@@ -304,3 +304,8 @@ body.pagina-inicial { width: 100%; max-width: 100%; margin: 0 auto; padding: 0 0
     .pagina-inicial .container { max-width: 520px; }
     .pagina-inicial .linha-registro { grid-template-columns: minmax(0,1fr); }
 }
+
+
+/* Exibe o arquivo original da logo sem redesenhar o símbolo. */
+.pagina-inicial .marca-folha { display: flex; align-items: center; justify-content: center; flex: 0 0 auto; overflow: visible; }
+.pagina-inicial .logo-floresta { display: block; width: 100%; height: 100%; object-fit: contain; object-position: center; }
