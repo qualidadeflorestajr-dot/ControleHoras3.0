@@ -11,20 +11,30 @@
     <div class="topo-conteudo">
         <div class="marca-site">
             <div class="marca-folha" aria-hidden="true">
-                <svg viewBox="0 0 80 100" role="img">
-                    <g fill="#16823D" stroke="#D9F5DF" stroke-width="1.4">
-                        <path d="M40 5C22 5 15 20 20 34C5 31 2 48 13 58C8 73 22 87 35 83C38 94 49 95 53 82C70 82 77 65 67 54C77 39 64 25 54 29C57 14 49 5 40 5Z"/>
-                        <path d="M25 10C14 7 7 16 10 27C0 27 0 40 10 44C4 54 11 64 20 62C18 74 28 80 35 74C37 84 45 86 49 76C60 80 68 70 62 60C73 52 68 40 58 39C66 28 58 17 49 21C49 10 37 5 31 13Z"/>
+                <svg viewBox="0 0 100 120" role="img" aria-label="Símbolo de folhas verdes">
+                    <defs>
+                        <linearGradient id="folhaMetal" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0" stop-color="#42B84F"/>
+                            <stop offset=".48" stop-color="#16823D"/>
+                            <stop offset="1" stop-color="#064A2B"/>
+                        </linearGradient>
+                    </defs>
+                    <g fill="url(#folhaMetal)" stroke="#D9F5DF" stroke-width="1.2" stroke-linejoin="round">
+                        <path d="M18 24C5 16 5 5 16 4C28 5 30 16 18 24Z"/>
+                        <path d="M36 19C23 9 27 0 37 1C48 4 47 14 36 19Z"/>
+                        <path d="M54 18C45 7 50 0 59 4C68 9 64 16 54 18Z"/>
+                        <path d="M72 25C64 14 70 7 78 12C86 18 80 24 72 25Z"/>
+                        <path d="M84 35C79 25 86 20 92 27C97 34 90 38 84 35Z"/>
+                        <path d="M48 109C41 97 27 88 23 70C17 46 29 29 49 25C70 28 83 45 76 69C72 87 57 99 48 109Z"/>
+                        <path d="M29 83C16 91 12 105 24 111C36 112 42 99 39 91Z"/>
+                        <path d="M68 84C81 89 87 102 77 110C65 113 58 100 61 91Z"/>
+                        <path d="M36 102C27 110 32 118 42 117C48 112 44 105 36 102Z"/>
+                        <path d="M60 103C70 109 66 118 56 117C50 112 53 106 60 103Z"/>
                     </g>
-                    <g fill="none" stroke="#F4FFF6" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M40 87C39 65 38 42 39 14M39 31L25 21M39 44L53 31M39 56L24 44M39 68L54 53M39 78L28 68"/>
-                        <path d="M22 6C13 0 6 8 10 18C1 19 1 30 10 34M58 7C69 2 74 12 69 21C78 26 74 37 65 39M17 74C7 78 12 91 23 89M61 71C73 74 70 87 58 88"/>
-                    </g>
-                    <g fill="#16823D" stroke="#D9F5DF" stroke-width="1">
-                        <path d="M16 7C6 3 2 11 8 19C14 20 18 15 16 7Z"/>
-                        <path d="M32 3C21 1 19 10 27 17C33 15 35 9 32 3Z"/>
-                        <path d="M49 4C40 1 36 10 43 17C49 15 52 10 49 4Z"/>
-                        <path d="M65 12C56 8 52 17 59 23C65 22 68 17 65 12Z"/>
+                    <g fill="none" stroke="#F4FFF6" stroke-width="2.1" stroke-linecap="round">
+                        <path d="M49 103C49 83 48 56 49 31M49 48L36 38M49 61L63 47M49 73L34 60M49 85L64 70M49 95L38 84"/>
+                        <path d="M18 21L16 8M36 16L37 5M54 15L57 7M72 22L76 15M84 32L89 28"/>
+                        <path d="M29 86L22 102M68 87L79 102"/>
                     </g>
                 </svg>
             </div>
@@ -33,10 +43,6 @@
                 <p>FLORESTA JR. | GESTÃO 2026/2</p>
             </div>
         </div>
-        <a href="{{ url_for('admin') }}" class="botao-configuracao">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8.2a3.8 3.8 0 1 0 0 7.6 3.8 3.8 0 0 0 0-7.6Zm9 4.9v-2.2l-2.1-.7a7.5 7.5 0 0 0-.7-1.7l1-2-1.6-1.6-2 1a7.5 7.5 0 0 0-1.7-.7L13.2 3h-2.3l-.7 2.1a7.5 7.5 0 0 0-1.7.7l-2-1-1.6 1.6 1 2a7.5 7.5 0 0 0-.7 1.7l-2.1.7v2.3l2.1.7a7.5 7.5 0 0 0 .7 1.7l-1 2 1.6 1.6 2-1a7.5 7.5 0 0 0 1.7.7l.7 2.1h2.3l.7-2.1a7.5 7.5 0 0 0 1.7-.7l2 1 1.6-1.6-1-2a7.5 7.5 0 0 0 .7-1.7l2.1-.7Z" fill="currentColor"/></svg>
-            Configuração
-        </a>
     </div>
 </header>
 
@@ -133,7 +139,7 @@
     </section>
 
     <footer class="footer footer-painel">
-        <a href="{{ url_for('admin') }}" class="link-area-admin"><span class="mini-folha" aria-hidden="true">◆</span> Configuração</a>
+        <a href="{{ url_for('admin') }}" class="link-area-admin">Configuração</a>
         <div class="texto-footer">
             <p><strong>Sistema de Controle de Horas – Floresta Jr.</strong></p>
             <p>Gestão 2026/2</p>
