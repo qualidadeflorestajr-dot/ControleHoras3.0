@@ -126,6 +126,69 @@ document.querySelectorAll("tbody tr").forEach(function(linha) {
         situacao.className = "situacao-texto estado-erro";
     }
 });
+
+(function () {
+    const botao = document.getElementById("alternar-filtros-admin");
+    const painel = document.getElementById("filtros-admin");
+    const campoNome = document.getElementById("filtro-nome-admin");
+    const campoData = document.getElementById("filtro-data-admin");
+    const campoSituacao = document.getElementById("filtro-situacao-admin");
+    const limpar = document.getElementById("limpar-filtros-admin");
+    const contador = document.getElementById("contador-filtros-admin");
+    const corpo = document.getElementById("corpo-registros-admin");
+    if (!botao || !painel || !corpo) return;
+
+    botao.addEventListener("click", function () {
+        const abrir = painel.hidden;
+        painel.hidden = !abrir;
+        botao.setAttribute("aria-expanded", String(abrir));
+        botao.classList.toggle("filtros-abertos", abrir);
+        if (abrir && campoNome) campoNome.focus();
+    });
+
+    function aplicarFiltros() {
+        const nome = (campoNome.value || "").trim().toLocaleLowerCase("pt-BR");
+        const data = (campoData.value || "").trim().toLocaleLowerCase("pt-BR");
+        const situacao = (campoSituacao.value || "").trim().toLocaleLowerCase("pt-BR");
+        let visiveis = 0;
+        const linhas = Array.from(corpo.querySelectorAll("tr"));
+        linhas.forEach(function (linha) {
+            const celulas = linha.querySelectorAll("td");
+            if (celulas.length < 9) return;
+            const correspondeNome = celulas[1].textContent.toLocaleLowerCase("pt-BR").includes(nome);
+            const correspondeData = celulas[2].textContent.toLocaleLowerCase("pt-BR").includes(data);
+            const textoSituacao = (linha.querySelector(".situacao-texto")?.textContent || "").trim().toLocaleLowerCase("pt-BR");
+            const correspondeSituacao = !situacao || textoSituacao.includes(situacao);
+            const mostrar = correspondeNome && correspondeData && correspondeSituacao;
+            linha.hidden = !mostrar;
+            if (mostrar) visiveis += 1;
+        });
+        if (contador) contador.textContent = visiveis + (visiveis === 1 ? " registro exibido" : " registros exibidos");
+        let aviso = document.getElementById("nenhum-filtro-admin");
+        if (!aviso) {
+            aviso = document.createElement("p");
+            aviso.id = "nenhum-filtro-admin";
+            aviso.className = "ajuda nenhum-filtro-admin";
+            aviso.textContent = "Nenhum registro corresponde aos filtros.";
+            aviso.hidden = true;
+            corpo.closest(".tabela-responsiva").insertAdjacentElement("afterend", aviso);
+        }
+        aviso.hidden = visiveis > 0;
+    }
+    [campoNome, campoData, campoSituacao].forEach(function (campo) {
+        if (campo) campo.addEventListener("input", aplicarFiltros);
+        if (campo && campo.tagName === "SELECT") campo.addEventListener("change", aplicarFiltros);
+    });
+    if (limpar) limpar.addEventListener("click", function () {
+        campoNome.value = "";
+        campoData.value = "";
+        campoSituacao.value = "";
+        aplicarFiltros();
+        campoNome.focus();
+    });
+    aplicarFiltros();
+})();
+
 </script>
 </body>
 </html>
