@@ -460,3 +460,17 @@ body.pagina-admin {
     .pagina-admin .acoes-filtro-admin button { width:100%; }
     .pagina-admin #contador-filtros-admin { text-align:center; }
 }
+
+
+/* Ícones restaurados em branco para manter contraste no menu verde. */
+.pagina-admin .admin-nav .nav-monograma {
+    color:#fff !important;
+    background:rgba(255,255,255,.09);
+    border-color:rgba(255,255,255,.22);
+}
+.pagina-admin .admin-nav a.ativo .nav-monograma,
+.pagina-admin .admin-nav a:hover .nav-monograma {
+    color:#fff !important;
+    background:rgba(255,255,255,.16);
+    border-color:rgba(255,255,255,.3);
+}
