@@ -210,3 +210,59 @@ body.pagina-inicial { padding: 0 0 30px; background: radial-gradient(ellipse at 
     .botao-configuracao svg { width: 21px; height: 21px; }
     .pagina-inicial .card { padding: 16px; }
 }
+
+
+/* Interface exclusiva mobile: a página inicial mantém proporções de celular também em telas grandes. */
+body.pagina-inicial { width: 100%; max-width: 100%; margin: 0 auto; padding: 0 0 18px; overflow-x: hidden; }
+.pagina-inicial .topo-site { margin-bottom: 14px; }
+.pagina-inicial .topo-conteudo { width: 100%; max-width: 520px; min-height: 0; margin: 0 auto; padding: 14px 14px 16px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+.pagina-inicial .marca-site { flex: 1 1 100%; justify-content: flex-start; gap: 12px; }
+.pagina-inicial .marca-folha { width: 48px; height: 58px; }
+.pagina-inicial .marca-site h1 { font-size: 1.15rem; line-height: 1.2; }
+.pagina-inicial .marca-site p { margin-top: 4px; font-size: .72rem; }
+.pagina-inicial .botao-configuracao { width: 100%; min-height: 42px; padding: 9px 13px; font-size: .9rem; border-radius: 9px !important; }
+.pagina-inicial .container { width: 100%; max-width: 520px; margin: 0 auto; padding: 0 12px; }
+.pagina-inicial .card { padding: 15px; margin-bottom: 13px; border-radius: 12px !important; }
+.pagina-inicial .card h2 { gap: 9px; margin-bottom: 13px; font-size: 1.08rem; }
+.pagina-inicial .card h2 svg, .pagina-inicial .titulo-ranking svg { width: 23px; height: 23px; }
+.pagina-inicial .bloco-ranking { display: block; padding: 14px; }
+.pagina-inicial .titulo-ranking { min-height: 0; padding: 0 0 10px; margin-bottom: 9px; border-right: 0; border-bottom: 1px solid #C2DCCB; font-size: 1rem; }
+.pagina-inicial .ranking { display: grid; grid-template-columns: minmax(0,1fr); gap: 7px; }
+.pagina-inicial .ranking-item { min-width: 0; grid-template-columns: 30px minmax(0,1fr) auto; gap: 8px; padding: 8px; }
+.pagina-inicial .ranking-item strong { font-size: .86rem; line-height: 1.35; overflow-wrap: anywhere; }
+.pagina-inicial .ranking-posicao { width: 28px; height: 28px; font-size: .8rem; }
+.pagina-inicial .ranking-total { font-size: 1rem; }
+.pagina-inicial .bloco-registro { padding: 15px; }
+.pagina-inicial .linha-registro { display: grid; grid-template-columns: minmax(0,1fr); gap: 14px; }
+.pagina-inicial .linha-registro form { display: grid; grid-template-columns: minmax(0,1fr); gap: 8px; }
+.pagina-inicial .linha-registro select { min-height: 48px; width: 100%; padding: 10px 12px; font-size: .92rem; border-radius: 8px !important; }
+.pagina-inicial .botao-registro { min-height: 48px; padding: 10px 12px; border-radius: 9px !important; font-size: .92rem; }
+.pagina-inicial .bloco-registro .ajuda { font-size: .78rem; }
+.pagina-inicial .titulo-com-filtro { margin-bottom: 11px; gap: 8px; }
+.pagina-inicial .titulo-com-filtro h2 { font-size: 1.02rem; }
+.pagina-inicial .botao-filtro { width: 43px; height: 42px; min-height: 42px; padding: 9px; border-radius: 9px !important; }
+.pagina-inicial .filtros-tabela { grid-template-columns: minmax(0,1fr); gap: 10px; margin-bottom: 11px; padding: 12px; border-radius: 9px !important; }
+.pagina-inicial .filtros-tabela label { font-size: .82rem; }
+.pagina-inicial .filtros-tabela input { width: 100%; min-height: 42px; padding: 9px 10px; font-size: .9rem; }
+.pagina-inicial .filtros-tabela button { width: 100%; min-height: 40px; }
+.pagina-inicial .tabela-responsiva { overflow-x: auto; border-radius: 8px !important; }
+.pagina-inicial table { width: 100%; min-width: 0; table-layout: fixed; }
+.pagina-inicial th { padding: 10px 3px; font-size: .68rem; white-space: normal; overflow-wrap: anywhere; }
+.pagina-inicial td { padding: 10px 3px; font-size: .72rem; overflow-wrap: anywhere; }
+.pagina-inicial .bloco-semanal th, .pagina-inicial .bloco-semanal td { padding: 11px 9px; font-size: .82rem; }
+.pagina-inicial .footer-painel { display: flex; flex-direction: column; align-items: stretch; gap: 12px; margin-top: 16px; padding: 14px; border-radius: 11px !important; }
+.pagina-inicial .link-area-admin { justify-content: center; width: 100%; white-space: normal; border-radius: 8px !important; }
+.pagina-inicial .texto-footer, .pagina-inicial .texto-footer p, .pagina-inicial .texto-footer small { text-align: center; font-size: .76rem; overflow-wrap: anywhere; }
+@media (min-width: 521px) {
+    body.pagina-inicial { background: #E6EFE9; }
+    .pagina-inicial .topo-site { box-shadow: 0 8px 24px rgba(3,45,32,.2); }
+    .pagina-inicial .container { padding-top: 0; }
+}
+@media (max-width: 360px) {
+    .pagina-inicial .container { padding: 0 8px; }
+    .pagina-inicial .card { padding: 12px; }
+    .pagina-inicial .marca-site h1 { font-size: 1.02rem; }
+    .pagina-inicial .marca-site p { font-size: .65rem; }
+    .pagina-inicial th { font-size: .62rem; }
+    .pagina-inicial td { font-size: .66rem; }
+}
