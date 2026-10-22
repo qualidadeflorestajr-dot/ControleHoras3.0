@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body class="pagina-admin">
-<aside class="admin-sidebar"><a class="admin-marca" href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='img/logo_floresta_jr.webp') }}" alt="Logo Floresta Jr."><span>Floresta Jr.</span></a><nav class="admin-nav" aria-label="Navegação administrativa"><a href="#inicio"><span>⌂</span>Início</a><a href="#membros"><span>♧</span>Membros</a><a href="#registros"><span>◷</span>Registros</a><a href="{{ url_for('exportar') }}"><span>▤</span>Relatórios</a><a href="#acoes-admin" class="ativo"><span>⚙</span>Configurações</a></nav><div class="admin-sidebar-rodape"><strong>Área administrativa</strong><small>Floresta Jr. · UFLA</small></div></aside>
+<aside class="admin-sidebar"><a class="admin-marca" href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='img/logo_floresta_jr.webp') }}" alt="Logo Floresta Jr."><span>Floresta Jr.</span></a><nav class="admin-nav" aria-label="Navegação administrativa"><a href="#inicio"><span class="nav-monograma">I</span>Início</a><a href="#membros"><span class="nav-monograma">M</span>Membros</a><a href="#registros"><span class="nav-monograma">R</span>Registros</a><a href="{{ url_for('exportar') }}"><span class="nav-monograma">E</span>Relatórios</a><a href="#acoes-admin" class="ativo"><span class="nav-monograma">C</span>Configurações</a></nav><div class="admin-sidebar-rodape"><strong>Área administrativa</strong><small>Floresta Jr. · UFLA</small></div></aside>
 <main class="admin-main"><div class="container admin-container">
     <header id="inicio" class="admin-cabecalho">
         <div class="admin-cabecalho-texto"><p class="admin-sobretitulo">CONTROLE DE HORAS · GESTÃO 2026/2</p><h1>Área administrativa</h1>
@@ -17,7 +17,7 @@
       {% if mensagens %}<section class="card mensagens" role="status">{% for mensagem in mensagens %}<p>{{ mensagem }}</p>{% endfor %}</section>{% endif %}
     {% endwith %}
     <section class="card admin-acoes-card" id="acoes-admin">
-        <div class="admin-titulo-secao"><div><p class="admin-sobretitulo">CENTRAL DE CONTROLE</p><h2>Painel do administrador</h2></div><span class="admin-escudo">✓</span></div><p class="ajuda admin-alerta"><strong>Atenção:</strong> a exclusão de registros não pode ser desfeita.</p>
+        <div class="admin-titulo-secao"><div><p class="admin-sobretitulo">CENTRAL DE CONTROLE</p><h2>Painel do administrador</h2></div><span class="admin-contador">Ações do sistema</span></div><p class="ajuda admin-alerta"><strong>Atenção:</strong> a exclusão de registros não pode ser desfeita.</p>
         <div class="acoes-admin">
             <a href="{{ url_for('exportar') }}" class="botao-admin">Exportar relatório Excel</a>
             <form action="{{ url_for('limpar') }}" method="POST" onsubmit="return confirm('Tem certeza de que deseja apagar todos os registros? Esta ação não pode ser desfeita.');">
@@ -63,12 +63,13 @@
         </div>
     </section>
     <section class="card" id="registros">
-        <div class="admin-titulo-secao"><div><p class="admin-sobretitulo">ACOMPANHAMENTO</p><h2>Registros administrativos</h2></div><span class="admin-privacidade">Dados privados</span></div>
+        <div class="admin-titulo-secao titulo-registros"><div><p class="admin-sobretitulo">ACOMPANHAMENTO</p><h2>Registros administrativos</h2></div><button type="button" id="alternar-filtros-admin" class="botao-filtro-admin" aria-expanded="false" aria-controls="filtros-admin"><span class="filtro-glyph" aria-hidden="true">≡</span><span>Filtros</span></button></div>
+        <div id="filtros-admin" class="filtros-admin" hidden><div class="campo-filtro-admin"><label for="filtro-nome-admin">Pesquisar membro</label><input id="filtro-nome-admin" type="search" placeholder="Digite um nome..." autocomplete="off"></div><div class="campo-filtro-admin"><label for="filtro-data-admin">Filtrar data</label><input id="filtro-data-admin" type="text" placeholder="DD/MM/AAAA ou AAAA-MM-DD" autocomplete="off"></div><div class="campo-filtro-admin"><label for="filtro-situacao-admin">Situação</label><select id="filtro-situacao-admin"><option value="">Todas as situações</option><option value="dentro do local">Dentro do local</option><option value="atenção">Atenção</option><option value="fora do local">Fora do local</option><option value="não informado">Não informado</option><option value="não identificado">Não identificado</option></select></div><div class="acoes-filtro-admin"><button type="button" id="limpar-filtros-admin" class="botao-secundario">Limpar filtros</button><span id="contador-filtros-admin" role="status" aria-live="polite"></span></div></div>
         <p class="ajuda"><strong>Informação privada:</strong> a distância é exibida somente nesta área administrativa.</p>
         <div class="tabela-responsiva">
         <table>
             <thead><tr><th>ID</th><th>Nome</th><th>Data</th><th>Entrada</th><th>Saída</th><th>Total</th><th>Distância</th><th>Situação</th><th>Ações</th></tr></thead>
-            <tbody>
+            <tbody id="corpo-registros-admin">
             {% for registro in registros %}
             <tr>
                 <td>{{ registro.id }}</td><td>{{ registro.nome }}</td><td>{{ registro.data }}</td>
