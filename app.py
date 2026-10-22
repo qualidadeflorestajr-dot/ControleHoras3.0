@@ -2,11 +2,16 @@ import hmac
 import os
 import secrets
 
+from dotenv import load_dotenv
 from flask import Flask, abort, request, session
 
 from banco import criar_banco, encerrar_jornadas_expiradas
 from rotas import registrar_rotas
 
+
+# Carrega configurações locais do .env sem sobrescrever variáveis do ambiente.
+# O arquivo .env é ignorado pelo Git e não deve ser publicado.
+load_dotenv()
 
 app = Flask(__name__)
 app.config.update(
