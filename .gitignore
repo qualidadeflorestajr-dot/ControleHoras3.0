@@ -21,3 +21,6 @@ relatorios/*.xlsx
 .coverage
 .DS_Store
 Thumbs.db
+
+# Chave privada de sessão Flask gerada localmente
+.flask_secret_key
