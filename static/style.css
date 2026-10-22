@@ -266,3 +266,55 @@ body.pagina-inicial { width: 100%; max-width: 100%; margin: 0 auto; padding: 0 0
     .pagina-inicial th { font-size: .62rem; }
     .pagina-inicial td { font-size: .66rem; }
 }
+
+
+/* Ajustes solicitados para a interface responsiva e a logo original. */
+.pagina-inicial .marca-folha {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    overflow: visible;
+}
+.pagina-inicial .logo-floresta {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+}
+.pagina-inicial .botao-configuracao { display: none !important; }
+.pagina-inicial .mini-folha { display: none !important; }
+.pagina-inicial .filtros-tabela[hidden] { display: none !important; }
+
+@media (min-width: 900px) {
+    .pagina-inicial .topo-conteudo {
+        width: min(100% - 48px, 1120px);
+        max-width: 1120px;
+        min-height: 122px;
+        padding: 18px 0;
+        flex-wrap: nowrap;
+    }
+    .pagina-inicial .marca-site { flex: 1 1 auto; }
+    .pagina-inicial .marca-folha { width: 78px; height: 94px; }
+    .pagina-inicial .marca-site h1 { font-size: 2rem; }
+    .pagina-inicial .marca-site p { font-size: .95rem; }
+    .pagina-inicial .container {
+        width: min(100% - 48px, 1120px);
+        max-width: 1120px;
+        padding: 0;
+    }
+    .pagina-inicial .card { padding: 24px 28px; margin-bottom: 20px; }
+    .pagina-inicial .bloco-ranking { display: grid; grid-template-columns: 210px minmax(0,1fr); }
+    .pagina-inicial .titulo-ranking { padding: 0 20px 0 0; margin: 0; border-right: 1px solid #C2DCCB; border-bottom: 0; }
+    .pagina-inicial .ranking { display: flex; flex-wrap: wrap; }
+    .pagina-inicial .linha-registro { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    .pagina-inicial .linha-registro form { grid-template-columns: minmax(0,1fr); }
+    .pagina-inicial .footer-painel { flex-direction: row; align-items: center; }
+    .pagina-inicial .texto-footer, .pagina-inicial .texto-footer p, .pagina-inicial .texto-footer small { text-align: left; }
+}
+@media (max-width: 899px) {
+    .pagina-inicial .topo-conteudo { max-width: 520px; }
+    .pagina-inicial .container { max-width: 520px; }
+    .pagina-inicial .linha-registro { grid-template-columns: minmax(0,1fr); }
+}

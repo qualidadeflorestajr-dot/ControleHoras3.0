@@ -10,34 +10,13 @@
 <header class="topo-site">
     <div class="topo-conteudo">
         <div class="marca-site">
-            <div class="marca-folha" aria-hidden="true">
-                <svg viewBox="0 0 80 100" role="img">
-                    <g fill="#16823D" stroke="#D9F5DF" stroke-width="1.4">
-                        <path d="M40 5C22 5 15 20 20 34C5 31 2 48 13 58C8 73 22 87 35 83C38 94 49 95 53 82C70 82 77 65 67 54C77 39 64 25 54 29C57 14 49 5 40 5Z"/>
-                        <path d="M25 10C14 7 7 16 10 27C0 27 0 40 10 44C4 54 11 64 20 62C18 74 28 80 35 74C37 84 45 86 49 76C60 80 68 70 62 60C73 52 68 40 58 39C66 28 58 17 49 21C49 10 37 5 31 13Z"/>
-                    </g>
-                    <g fill="none" stroke="#F4FFF6" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M40 87C39 65 38 42 39 14M39 31L25 21M39 44L53 31M39 56L24 44M39 68L54 53M39 78L28 68"/>
-                        <path d="M22 6C13 0 6 8 10 18C1 19 1 30 10 34M58 7C69 2 74 12 69 21C78 26 74 37 65 39M17 74C7 78 12 91 23 89M61 71C73 74 70 87 58 88"/>
-                    </g>
-                    <g fill="#16823D" stroke="#D9F5DF" stroke-width="1">
-                        <path d="M16 7C6 3 2 11 8 19C14 20 18 15 16 7Z"/>
-                        <path d="M32 3C21 1 19 10 27 17C33 15 35 9 32 3Z"/>
-                        <path d="M49 4C40 1 36 10 43 17C49 15 52 10 49 4Z"/>
-                        <path d="M65 12C56 8 52 17 59 23C65 22 68 17 65 12Z"/>
-                    </g>
-                </svg>
-            </div>
+            <div class="marca-folha"><img src="{{ url_for('static', filename='img/logo_floresta_jr.webp') }}" alt="Logo Floresta Jr." class="logo-floresta"></div>
             <div>
                 <h1>CONTROLE DE HORAS</h1>
                 <p>FLORESTA JR. | GESTÃO 2026/2</p>
             </div>
         </div>
-        <a href="{{ url_for('admin') }}" class="botao-configuracao">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8.2a3.8 3.8 0 1 0 0 7.6 3.8 3.8 0 0 0 0-7.6Zm9 4.9v-2.2l-2.1-.7a7.5 7.5 0 0 0-.7-1.7l1-2-1.6-1.6-2 1a7.5 7.5 0 0 0-1.7-.7L13.2 3h-2.3l-.7 2.1a7.5 7.5 0 0 0-1.7.7l-2-1-1.6 1.6 1 2a7.5 7.5 0 0 0-.7 1.7l-2.1.7v2.3l2.1.7a7.5 7.5 0 0 0 .7 1.7l-1 2 1.6 1.6 2-1a7.5 7.5 0 0 0 1.7.7l.7 2.1h2.3l.7-2.1a7.5 7.5 0 0 0 1.7-.7l2 1 1.6-1.6-1-2a7.5 7.5 0 0 0 .7-1.7l2.1-.7Z" fill="currentColor"/></svg>
-            Configuração
-        </a>
-    </div>
+        </div>
 </header>
 
 <main class="container">
@@ -133,7 +112,7 @@
     </section>
 
     <footer class="footer footer-painel">
-        <a href="{{ url_for('admin') }}" class="link-area-admin"><span class="mini-folha" aria-hidden="true">◆</span> Configuração</a>
+        <a href="{{ url_for('admin') }}" class="link-area-admin">Configuração</a>
         <div class="texto-footer">
             <p><strong>Sistema de Controle de Horas – Floresta Jr.</strong></p>
             <p>Gestão 2026/2</p>
