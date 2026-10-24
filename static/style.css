@@ -497,3 +497,9 @@ body.pagina-admin {
     display:block; width:21px; height:21px; fill:currentColor;
     stroke:currentColor; stroke-width:1.4; stroke-linejoin:round;
 }
+
+
+/* Área administrativa sem barra lateral: conteúdo ocupa toda a largura. */
+body.pagina-admin.sem-barra-lateral { display:block; }
+.pagina-admin.sem-barra-lateral .admin-main { width:100%; min-width:0; max-width:none; padding:0 30px 24px; box-sizing:border-box; }
+@media (max-width:720px) { .pagina-admin.sem-barra-lateral .admin-main { padding:0 12px 18px; } }
