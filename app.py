@@ -1,12 +1,18 @@
 import hmac
 import os
 import secrets
+from pathlib import Path
 
+from dotenv import load_dotenv
 from flask import Flask, abort, request, session
 
 from banco import criar_banco, encerrar_jornadas_expiradas
 from rotas import registrar_rotas
 
+
+# Carrega configurações locais do .env sem sobrescrever variáveis do ambiente.
+# O arquivo .env é ignorado pelo Git e não deve ser publicado.
+load_dotenv()
 
 app = Flask(__name__)
 app.config.update(
@@ -17,9 +23,19 @@ app.config.update(
 )
 
 if not app.config["SECRET_KEY"]:
-    raise RuntimeError(
-        "Configure a variável de ambiente FLASK_SECRET_KEY antes de iniciar a aplicação."
-    )
+    # Em desenvolvimento, cria uma chave persistente automaticamente para não
+    # exigir configuração manual a cada inicialização do Codespaces.
+    chave_local = Path(__file__).resolve().parent / ".flask_secret_key"
+    try:
+        chave = chave_local.read_text(encoding="utf-8").strip() if chave_local.exists() else ""
+        if not chave:
+            chave = secrets.token_hex(32)
+            chave_local.write_text(chave + "\\n", encoding="utf-8")
+        app.config["SECRET_KEY"] = chave
+    except OSError:
+        # Fallback para ambientes sem permissão de gravar arquivos locais.
+        app.config["SECRET_KEY"] = secrets.token_hex(32)
+
 
 
 @app.context_processor

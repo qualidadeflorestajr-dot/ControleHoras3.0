@@ -6,17 +6,18 @@
     <title>Área administrativa | Controle de Horas</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body>
-<div class="container">
-    <header>
-        <h1>Área administrativa</h1>
-        <h3>Controle de Horas | Floresta Jr. 2026/2</h3>
+<body class="pagina-admin sem-barra-lateral">
+
+<main class="admin-main"><div class="container admin-container">
+    <header id="inicio" class="admin-cabecalho">
+        <div class="admin-cabecalho-texto"><p class="admin-sobretitulo">CONTROLE DE HORAS · GESTÃO 2026/2</p><h1>Área administrativa</h1>
+        <h3>Gerencie membros, registros e relatórios da equipe.</h3></div><span class="admin-chip">Acesso administrativo</span>
     </header>
     {% with mensagens = get_flashed_messages() %}
       {% if mensagens %}<section class="card mensagens" role="status">{% for mensagem in mensagens %}<p>{{ mensagem }}</p>{% endfor %}</section>{% endif %}
     {% endwith %}
-    <section class="card">
-        <h2>Painel do administrador</h2>
+    <section class="card admin-acoes-card" id="acoes-admin">
+        <div class="admin-titulo-secao"><div><p class="admin-sobretitulo">CENTRAL DE CONTROLE</p><h2>Painel do administrador</h2></div><span class="admin-contador">Ações do sistema</span></div><p class="ajuda admin-alerta"><strong>Atenção:</strong> a exclusão de registros não pode ser desfeita.</p>
         <div class="acoes-admin">
             <a href="{{ url_for('exportar') }}" class="botao-admin">Exportar relatório Excel</a>
             <form action="{{ url_for('limpar') }}" method="POST" onsubmit="return confirm('Tem certeza de que deseja apagar todos os registros? Esta ação não pode ser desfeita.');">
@@ -30,8 +31,8 @@
             <a href="{{ url_for('home') }}" class="botao-secundario link-botao">Voltar ao sistema</a>
         </div>
     </section>
-    <section class="card">
-        <h2>Gerenciar membros</h2>
+    <section class="card" id="membros">
+        <div class="admin-titulo-secao"><div><p class="admin-sobretitulo">EQUIPE</p><h2>Gerenciar membros</h2></div><span class="admin-contador">{{ membros|length }} membros</span></div>
         <p class="ajuda">Adicione pessoas sem alterar o código. Ao remover alguém, os registros antigos são preservados.</p>
         <form action="{{ url_for('adicionar_membro_rota') }}" method="POST" class="form-membro">
             <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
@@ -61,13 +62,14 @@
             </table>
         </div>
     </section>
-    <section class="card">
-        <h2>Registros administrativos</h2>
+    <section class="card" id="registros">
+        <div class="admin-titulo-secao titulo-registros"><div><p class="admin-sobretitulo">ACOMPANHAMENTO</p><h2>Registros administrativos</h2></div><button type="button" id="alternar-filtros-admin" class="botao-filtro-admin" aria-expanded="false" aria-controls="filtros-admin"><span class="filtro-glyph" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 5h18l-7 8v5l-4 2v-7z"/></svg></span><span>Filtros</span></button></div>
+        <div id="filtros-admin" class="filtros-admin" hidden><div class="campo-filtro-admin"><label for="filtro-nome-admin">Pesquisar membro</label><input id="filtro-nome-admin" type="search" placeholder="Digite um nome..." autocomplete="off"></div><div class="campo-filtro-admin"><label for="filtro-data-admin">Filtrar data</label><input id="filtro-data-admin" type="text" placeholder="DD/MM/AAAA ou AAAA-MM-DD" autocomplete="off"></div><div class="campo-filtro-admin"><label for="filtro-situacao-admin">Situação</label><select id="filtro-situacao-admin"><option value="">Todas as situações</option><option value="dentro do local">Dentro do local</option><option value="atenção">Atenção</option><option value="fora do local">Fora do local</option><option value="não informado">Não informado</option><option value="não identificado">Não identificado</option></select></div><div class="acoes-filtro-admin"><button type="button" id="limpar-filtros-admin" class="botao-secundario">Limpar filtros</button><span id="contador-filtros-admin" role="status" aria-live="polite"></span></div></div>
         <p class="ajuda"><strong>Informação privada:</strong> a distância é exibida somente nesta área administrativa.</p>
         <div class="tabela-responsiva">
         <table>
             <thead><tr><th>ID</th><th>Nome</th><th>Data</th><th>Entrada</th><th>Saída</th><th>Total</th><th>Distância</th><th>Situação</th><th>Ações</th></tr></thead>
-            <tbody>
+            <tbody id="corpo-registros-admin">
             {% for registro in registros %}
             <tr>
                 <td>{{ registro.id }}</td><td>{{ registro.nome }}</td><td>{{ registro.data }}</td>
@@ -95,6 +97,7 @@
         <small>© 2026 Floresta Jr. Todos os direitos reservados.</small>
     </footer>
 </div>
+</main>
 <script>
 document.querySelectorAll("tbody tr").forEach(function(linha) {
     const distanciaElemento = linha.querySelector(".distancia");
@@ -123,6 +126,69 @@ document.querySelectorAll("tbody tr").forEach(function(linha) {
         situacao.className = "situacao-texto estado-erro";
     }
 });
+
+(function () {
+    const botao = document.getElementById("alternar-filtros-admin");
+    const painel = document.getElementById("filtros-admin");
+    const campoNome = document.getElementById("filtro-nome-admin");
+    const campoData = document.getElementById("filtro-data-admin");
+    const campoSituacao = document.getElementById("filtro-situacao-admin");
+    const limpar = document.getElementById("limpar-filtros-admin");
+    const contador = document.getElementById("contador-filtros-admin");
+    const corpo = document.getElementById("corpo-registros-admin");
+    if (!botao || !painel || !corpo) return;
+
+    botao.addEventListener("click", function () {
+        const abrir = painel.hidden;
+        painel.hidden = !abrir;
+        botao.setAttribute("aria-expanded", String(abrir));
+        botao.classList.toggle("filtros-abertos", abrir);
+        if (abrir && campoNome) campoNome.focus();
+    });
+
+    function aplicarFiltros() {
+        const nome = (campoNome.value || "").trim().toLocaleLowerCase("pt-BR");
+        const data = (campoData.value || "").trim().toLocaleLowerCase("pt-BR");
+        const situacao = (campoSituacao.value || "").trim().toLocaleLowerCase("pt-BR");
+        let visiveis = 0;
+        const linhas = Array.from(corpo.querySelectorAll("tr"));
+        linhas.forEach(function (linha) {
+            const celulas = linha.querySelectorAll("td");
+            if (celulas.length < 9) return;
+            const correspondeNome = celulas[1].textContent.toLocaleLowerCase("pt-BR").includes(nome);
+            const correspondeData = celulas[2].textContent.toLocaleLowerCase("pt-BR").includes(data);
+            const textoSituacao = (linha.querySelector(".situacao-texto")?.textContent || "").trim().toLocaleLowerCase("pt-BR");
+            const correspondeSituacao = !situacao || textoSituacao.includes(situacao);
+            const mostrar = correspondeNome && correspondeData && correspondeSituacao;
+            linha.hidden = !mostrar;
+            if (mostrar) visiveis += 1;
+        });
+        if (contador) contador.textContent = visiveis + (visiveis === 1 ? " registro exibido" : " registros exibidos");
+        let aviso = document.getElementById("nenhum-filtro-admin");
+        if (!aviso) {
+            aviso = document.createElement("p");
+            aviso.id = "nenhum-filtro-admin";
+            aviso.className = "ajuda nenhum-filtro-admin";
+            aviso.textContent = "Nenhum registro corresponde aos filtros.";
+            aviso.hidden = true;
+            corpo.closest(".tabela-responsiva").insertAdjacentElement("afterend", aviso);
+        }
+        aviso.hidden = visiveis > 0;
+    }
+    [campoNome, campoData, campoSituacao].forEach(function (campo) {
+        if (campo) campo.addEventListener("input", aplicarFiltros);
+        if (campo && campo.tagName === "SELECT") campo.addEventListener("change", aplicarFiltros);
+    });
+    if (limpar) limpar.addEventListener("click", function () {
+        campoNome.value = "";
+        campoData.value = "";
+        campoSituacao.value = "";
+        aplicarFiltros();
+        campoNome.focus();
+    });
+    aplicarFiltros();
+})();
+
 </script>
 </body>
 </html>
