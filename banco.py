@@ -1,5 +1,6 @@
 import os
 import sqlite3
+import unicodedata
 from contextlib import contextmanager
 from datetime import datetime, timedelta
 from pathlib import Path
