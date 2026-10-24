@@ -1,5 +1,6 @@
 import os
 import sqlite3
+import unicodedata
 from contextlib import contextmanager
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -61,9 +62,20 @@ def criar_banco():
 
 def listar_membros():
     with transacao() as conn:
-        return [linha["nome"] for linha in conn.execute(
-            "SELECT nome FROM membros WHERE ativo = 1 ORDER BY id"
+        nomes = [linha["nome"] for linha in conn.execute(
+            "SELECT nome FROM membros WHERE ativo = 1"
         ).fetchall()]
+
+    # Ordenação alfabética para nomes em português, ignorando acentos
+    # e diferenças entre maiúsculas/minúsculas.
+    def chave_alfabetica(nome):
+        normalizado = unicodedata.normalize("NFKD", nome.casefold())
+        return "".join(
+            caractere for caractere in normalizado
+            if not unicodedata.combining(caractere)
+        )
+
+    return sorted(nomes, key=chave_alfabetica)
 
 
 def adicionar_membro(nome):
