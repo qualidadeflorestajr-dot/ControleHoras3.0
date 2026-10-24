@@ -60,10 +60,16 @@ def criar_banco():
 
 
 def listar_membros():
+    """Lista membros ativos em ordem alfabética, ignorando acentos na ordenação."""
     with transacao() as conn:
-        return [linha["nome"] for linha in conn.execute(
-            "SELECT nome FROM membros WHERE ativo = 1 ORDER BY id"
+        nomes = [linha["nome"] for linha in conn.execute(
+            "SELECT nome FROM membros WHERE ativo = 1"
         ).fetchall()]
+    def chave_alfabetica(nome):
+        sem_acentos = unicodedata.normalize("NFKD", nome)
+        return "".join(caractere for caractere in sem_acentos
+                       if not unicodedata.combining(caractere)).casefold()
+    return sorted(nomes, key=chave_alfabetica)
 
 
 def adicionar_membro(nome):
