@@ -22,9 +22,8 @@ logger = logging.getLogger(__name__)
 
 
 def registrar_rotas(app):
-    # Senha administrativa padrão solicitada pelo responsável do projeto.
-    # A variável de ambiente, se definida, continua tendo prioridade.
-    senha_admin = os.environ.get("ADMIN_PASSWORD") or "Qualidade2026/2"
+    # Sem senha configurada, o acesso administrativo permanece desabilitado.
+    senha_admin = os.environ.get("ADMIN_PASSWORD")
 
     def admin_required(view):
         @wraps(view)
