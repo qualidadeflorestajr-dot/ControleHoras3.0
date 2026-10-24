@@ -503,3 +503,15 @@ body.pagina-admin {
 body.pagina-admin.sem-barra-lateral { display:block; }
 .pagina-admin.sem-barra-lateral .admin-main { width:100%; min-width:0; max-width:none; padding:0 30px 24px; box-sizing:border-box; }
 @media (max-width:720px) { .pagina-admin.sem-barra-lateral .admin-main { padding:0 12px 18px; } }
+
+
+/* Correção definitiva: painel administrativo sem menu lateral, em qualquer largura. */
+body.pagina-admin { display:block !important; width:100%; max-width:100%; margin:0; }
+.pagina-admin .admin-sidebar { display:none !important; }
+.pagina-admin .admin-main { display:block !important; width:100% !important; max-width:none !important; min-width:0; margin:0 !important; padding:0 30px 24px !important; }
+.pagina-admin .admin-cabecalho { width:auto; margin:0 -30px 26px !important; }
+.pagina-admin .admin-container { width:100%; max-width:1440px; margin:0 auto; }
+@media (max-width:720px) {
+  .pagina-admin .admin-main { padding:0 12px 18px !important; }
+  .pagina-admin .admin-cabecalho { margin:0 -12px 16px !important; }
+}
