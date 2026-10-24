@@ -13,6 +13,11 @@
         <div class="admin-cabecalho-texto"><p class="admin-sobretitulo">CONTROLE DE HORAS · GESTÃO 2026/2</p><h1>Área administrativa</h1>
         <h3>Gerencie membros, registros e relatórios da equipe.</h3></div><span class="admin-chip">Acesso administrativo</span>
     </header>
+    <nav class="admin-atalhos" aria-label="Navegação administrativa">
+        <a href="#acoes-admin"><span class="atalho-numero">01</span><span><strong>Ações do sistema</strong><small>Exportação e acesso</small></span></a>
+        <a href="#membros"><span class="atalho-numero">02</span><span><strong>Equipe</strong><small>{{ membros|length }} membros ativos</small></span></a>
+        <a href="#registros"><span class="atalho-numero">03</span><span><strong>Registros</strong><small>{{ registros|length }} lançamentos</small></span></a>
+    </nav>
     {% with mensagens = get_flashed_messages() %}
       {% if mensagens %}<section class="card mensagens" role="status">{% for mensagem in mensagens %}<p>{{ mensagem }}</p>{% endfor %}</section>{% endif %}
     {% endwith %}
